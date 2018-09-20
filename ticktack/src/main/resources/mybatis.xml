@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+	    <!-- 启用懒加载，必须按照下面方式配置 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 将积极加载改为消极加载即按需加载。必须写,且为false才会懒加载 -->  
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<!-- 开启二级缓存 -->
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+
+	<!-- 设置类的别名 -->
+	<typeAliases>
+		<typeAlias type="com.edu.entity.Address" alias="Address"/>
+		<typeAlias type="com.edu.entity.Authority" alias="Authority"/>
+		<typeAlias type="com.edu.entity.Check" alias="Check"/>
+		<typeAlias type="com.edu.entity.City" alias="City"/>
+		<typeAlias type="com.edu.entity.Contect" alias="Contect"/>
+		<typeAlias type="com.edu.entity.County" alias="County"/>
+		<typeAlias type="com.edu.entity.Course" alias="Course"/>
+		<typeAlias type="com.edu.entity.Depart" alias="Depart"/>
+		<typeAlias type="com.edu.entity.Grade" alias="Grade"/>
+		<typeAlias type="com.edu.entity.Interviewquest" alias="Interviewquest"/>
+		<typeAlias type="com.edu.entity.Log" alias="Log"/>
+		<typeAlias type="com.edu.entity.Loginlog" alias="Loginlog"/>
+		<typeAlias type="com.edu.entity.Msg" alias="Msg"/>
+		<typeAlias type="com.edu.entity.Papers" alias="Papers"/>
+		<typeAlias type="com.edu.entity.Province" alias="Province"/>
+		<typeAlias type="com.edu.entity.Report" alias="Report"/>
+		<typeAlias type="com.edu.entity.Role" alias="Role"/>
+		<typeAlias type="com.edu.entity.Roleauthority" alias="Roleauthority"/>
+		<typeAlias type="com.edu.entity.Schedule" alias="Schedule"/>
+		<typeAlias type="com.edu.entity.Staff" alias="Staff"/>
+		<typeAlias type="com.edu.entity.Student" alias="Student"/>
+		<typeAlias type="com.edu.entity.User" alias="User"/>
+		<typeAlias type="com.edu.entity.Userrole" alias="Userrole"/>
+		<typeAlias type="com.edu.entity.Work" alias="Work"/>
+	</typeAliases>
+
+	
+	<!-- 引入映射文件 -->
+	<!-- <mappers>
+		<mapper resource="com/qianfeng/mapper/UserMapper.xml" />
+		<mapper resource="com/qianfeng/mapper/ResourcesMapper.xml" />
+		<mapper resource="com/qianfeng/mapper/EmployeeMapper.xml" />
+	</mappers> -->
+</configuration>

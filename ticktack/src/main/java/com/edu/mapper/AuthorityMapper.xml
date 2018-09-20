@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.dao.IAuthorityDao">
+  <resultMap id="authMap" type="Authority">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="aicon" jdbcType="VARCHAR" property="aicon" />
+    <result column="aurl" jdbcType="VARCHAR" property="aurl" />
+    <result column="parentId" jdbcType="INTEGER" property="parentid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  
+  <resultMap id="authMap2" type="Authority">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="aicon" jdbcType="VARCHAR" property="aicon" />
+    <result column="aurl" jdbcType="VARCHAR" property="aurl" />
+    <result column="parentId" jdbcType="INTEGER" property="parentid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    
+    <collection property="auth"
+    	fetchType="eager"
+    	javaType="java.util.ArrayList"
+    	ofType="com.edu.entity.Authority"
+    	column="id"
+    	select="com.edu.dao.IAuthorityDao.findSonById">
+    	
+    
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, aicon, aurl, parentId, title, type
+  </sql>
+  
+  <select id="findPermitByNo" parameterType="String" resultType="String">
+ 	select a.aicon from t_user u
+ 	inner join t_userrole ur
+ 	on u.id=ur.uid
+ 	inner join t_role r
+ 	on ur.rid=r.id
+ 	inner join t_roleauthority ra
+ 	on r.id=ra.rid
+ 	inner join t_authority a
+ 	on ra.aid=a.id
+ 	where u.no=#{no}
+  </select>
+  
+  <!-- 根据账号查找主页左侧菜单栏 -->
+  <select id="findTitleByNo" parameterType="String" resultMap="authMap2">
+  	select a.* from t_user u
+ 	inner join t_userrole ur
+ 	on u.id=ur.uid
+ 	inner join t_role r
+ 	on ur.rid=r.id
+ 	inner join t_roleauthority ra
+ 	on r.id=ra.rid
+ 	inner join t_authority a
+ 	on ra.aid=a.id
+ 	where u.no=#{no} and a.parentid=0
+  </select>
+  
+  <select id="findSonById" parameterType="int" resultMap="authMap2">
+  	select * from t_authority 
+ 	where parentid=#{id}
+  </select>
+  
+  <select id="count" resultType="int">
+  	select count(1) from t_authority
+  </select>
+  
+  <select id="findAllAuthByPage" parameterType="map" resultMap="authMap">
+  	select * from t_authority limit #{index},#{size}
+  </select>
+</mapper>
+
+
+
+
+
