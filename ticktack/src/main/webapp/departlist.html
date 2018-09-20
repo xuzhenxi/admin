@@ -27,12 +27,28 @@
 		  //第一个实例
 		  table.render({
 		    elem: '#tbdata'
-		    ,url: 'departpage.do' //数据接口
+		    ,url: 'departpage' //数据接口
 		    ,page: true //开启分页
 		    ,cols: [[ //表头
 		      {field: 'id', title: '序号', sort: true, fixed: 'left'}
 		      ,{field: 'name', title: '部门名称'}
-		      ,{field: 'dcount', title: '部门人数', sort: true}
+		      ,{field: 'dcount', title: '部门人数', sort: true, templet:function(obj){
+		    	  var count = 333;
+		    	  $.ajax({
+            		type:"get",
+            		async:false,
+            		url:"showcount?id=" + obj.id,
+            		dataType:"json",
+            		success:function(data){
+            			/* if (data.code == 1){
+            				var info = data.msg;
+            				count = "<span>" + info + "</span>";
+            			} */
+            		}
+            	
+            	})
+            	return count;
+            }}
 		      ,{field: 'createtime', title: '成立日期'}
 		      ,{field:'right', title: '操作',toolbar:"#barop"}
 		    ]]

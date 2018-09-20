@@ -2,6 +2,8 @@ package com.edu.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Depart {
     private Integer id;
 
@@ -10,8 +12,10 @@ public class Depart {
     private Date createtime;
 
     private Integer flag;
+    
+   
 
-    public Integer getId() {
+	public Integer getId() {
         return id;
     }
 
@@ -26,7 +30,8 @@ public class Depart {
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
-
+    
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
     public Date getCreatetime() {
         return createtime;
     }

@@ -1,7 +1,6 @@
 package com.edu.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,23 +8,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edu.entity.Role;
-import com.edu.service.IRoleService;
+import com.edu.entity.Depart;
+import com.edu.service.IDepartService;
+import com.edu.service.IStaffService;
 import com.edu.vo.JsonBean;
 import com.edu.vo.PageBean;
 
 @Controller
-public class RoleController {
+public class DepartController {
 	
 	@Autowired
-	private IRoleService roleService;
+	private IDepartService departService;
 	
-	@RequestMapping("/rolepage")
+	@RequestMapping("/departpage")
 	@ResponseBody
-	public Map<String, Object> findAllRole(int page, int limit){
+	public Map<String, Object> findAllUser(int page, int limit){
 		Map<String, Object> map = new HashMap<>();
-		PageBean<Role> pageInfo = roleService.findAllRoleByPage(page, limit);
-		
+		PageBean<Depart> pageInfo = departService.findDepartByPage(page, limit);
 		map.put("code", 0);  //针对layui的表格，0表示成功
 		map.put("msg", "");
 		map.put("count", pageInfo.getCount());
@@ -34,22 +33,25 @@ public class RoleController {
 		return map;
 	}
 	
-	@RequestMapping("/roleall")
+	@Autowired
+	private IStaffService staffService;
+	
+	@RequestMapping("/showcount")
 	@ResponseBody
-	public JsonBean findAllRole() {
+	public JsonBean findCountByDid(int id) {
+		int count = 0;
 		JsonBean bean = new JsonBean();
-		List<Role> list = null;
-		
-		try {
-			list = roleService.findAllRole();
-			bean.setCode(1);
-			bean.setMsg(list);
-		} catch (Exception e) {
-			e.printStackTrace();
-			bean.setCode(0);
-			bean.setMsg(e.getMessage());
+		if (id != 0) {
+			try {
+				count = staffService.findCountByDid(id);
+				bean.setCode(1);
+				bean.setMsg(count);
+			} catch (Exception e) {
+				e.printStackTrace();
+				bean.setCode(0);
+				bean.setMsg(e.getMessage());
+			}
 		}
-		
 		return bean;
 	}
 }

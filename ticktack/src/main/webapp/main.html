@@ -126,14 +126,13 @@
 		layui.use('table', function() {
 			var table = layui.table;
 			 
-			var table = layui.table;
 			  
 			  //第一个实例
 			  table.render({
 			    elem: '#tbdata'
 			    ,height: '360px'
-			    ,url: 'loginloglist.do' //数据接口
-			    ,page: false //开启分页
+			    ,url: 'loginloglist' //数据接口
+			    ,page: true //开启分页
 			    ,cols: [[ //表头
 			    	{field: 'no', title: '登录账户'}
 			      ,{field: 'ip', title: '登录IP'}

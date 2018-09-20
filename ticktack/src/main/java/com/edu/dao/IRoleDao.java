@@ -12,4 +12,6 @@ public interface IRoleDao {
     public List<Role> findAllRoleByPage(Map<String, Object> map);
     
     public int count();
+    
+    public List<Role> findAllRole();
 }

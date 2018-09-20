@@ -8,4 +8,6 @@ public interface IUserroleDao {
     int insert(Userrole record);
 
     int insertSelective(Userrole record);
+    
+    public void deleteByUid(int uid);
 }

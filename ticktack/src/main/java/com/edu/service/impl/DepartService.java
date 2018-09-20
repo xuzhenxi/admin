@@ -7,26 +7,26 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edu.dao.IRoleDao;
-import com.edu.entity.Role;
+import com.edu.dao.IDepartDao;
+import com.edu.entity.Depart;
 import com.edu.entity.User;
-import com.edu.service.IRoleService;
+import com.edu.service.IDepartService;
 import com.edu.vo.PageBean;
 
 @Service
-public class RoleService implements IRoleService{
+public class DepartService implements IDepartService {
 	
 	@Autowired
-	private IRoleDao roleDao;
+	private IDepartDao departDao;
 	
 	@Override
-	public PageBean<Role> findAllRoleByPage(int page, int size) {
-		PageBean<Role> pageInfo = new PageBean<>();
+	public PageBean<Depart> findDepartByPage(int page, int size) {
+		PageBean<Depart> pageInfo = new PageBean<>();
 		
 		pageInfo.setPageSize(size);
 		pageInfo.setCurrentPage(page);
 		
-		int count = roleDao.count();
+		int count = departDao.count();
 		pageInfo.setCount(count);
 		
 		if (count % size == 0) {
@@ -39,21 +39,10 @@ public class RoleService implements IRoleService{
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
 		map.put("size", size);
-		List<Role> list = roleDao.findAllRoleByPage(map);
+		List<Depart> list = departDao.findByIndexAndSize(map);
 		pageInfo.setPageInfos(list);
 		
 		return pageInfo;
-	}
-
-	@Override
-	public List<Role> findAllRole() {
-		List<Role> list = null;
-		try {
-			list = roleDao.findAllRole();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
 	}
 
 }

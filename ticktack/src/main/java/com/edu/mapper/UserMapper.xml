@@ -15,7 +15,7 @@
   </sql>
   
   <!-- 通过账号查找用户 -->
-  <select id="findByNo" parameterType="String" resultMap="userMap">
+  <select id="findByNo" parameterType="String" resultType="User">
    	select * from t_user where no=#{no}
   </select>
   
@@ -36,6 +36,14 @@
   	right join t_user u
   	on u.id=ur.uid
   	where u.id=#{id}
+  </select>
+  
+  <delete id="deleteUserById" parameterType="int">
+  	delete from t_user where id=#{id}
+  </delete>
+  
+  <select id="findUserById" parameterType="int" resultType="User">
+  	select * from t_user where id=#{id}
   </select>
   
 </mapper>

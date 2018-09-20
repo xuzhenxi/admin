@@ -67,12 +67,36 @@ function showData(obj) {
 	</div>
 	
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-	<script>
+	<!-- <script>
 		layui.use([ 'form', 'laydate' ],
 						function() {
 							var form = layui.form, layer = layui.layer, laydate = layui.laydate;
 
 		});
+	</script> -->
+	
+	<script type="text/javascript">
+	$(function(){
+		$("form").validate({
+			submitHandler:function(){
+				$("form").ajaxSubmit({
+					type:"post",
+					url:"updatedepart",
+					data:{id:$("#id").val(), name:$("#name").val(), createtime:$("#createtime").val()},
+					dataType:"json",
+					success:function(data){
+						if(data.code == 1){
+							window.location.href = "departlist.html";
+						}else if(data.code == 0){
+							alert(data.msg);
+						}
+					}
+				})
+				
+			}
+		})
+	}
 	</script>
+	
 </body>
 </html>

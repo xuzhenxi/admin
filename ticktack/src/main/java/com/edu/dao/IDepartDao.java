@@ -1,17 +1,14 @@
 package com.edu.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.edu.entity.Depart;
 
 public interface IDepartDao {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Depart record);
-
-    int insertSelective(Depart record);
-
-    Depart selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Depart record);
-
-    int updateByPrimaryKey(Depart record);
+    
+    public int count();
+    
+    public List<Depart> findByIndexAndSize(Map<String, Object> map);
+    
 }

@@ -2,6 +2,8 @@ package com.edu.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Loginlog {
     private Long id;
 
@@ -36,8 +38,10 @@ public class Loginlog {
     public void setNo(String no) {
         this.no = no == null ? null : no.trim();
     }
-
+    
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
     public Date getCreatetime() {
+    	
         return createtime;
     }
 

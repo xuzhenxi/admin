@@ -117,16 +117,21 @@
             if (obj.event === 'del') {
                 layer.confirm('是否确认删除用户?', function (index) {
                     $.ajax({
-                        url: "userdel.do",
+                        url: "userdel",
                         type: "POST",
                         data: "id=" + data.id,
+                        dataType:"json",
                         success: function (data) {
-                            if (data.code == 1000) {
+                            if (data.code == 1) {
                                 obj.del();//删除表格中的对应行数据
                                 layer.close(index);
                                 layer.msg("删除成功", {icon: 6});
-                            } else {
-                                layer.msg("删除失败", {icon: 5});
+                            } else if (data.code == 2) {
+                                layer.msg("查无此人", {icon: 5});
+                            } else if (data.code == 3) {
+                                layer.msg("无法删除自己", {icon: 5});
+                            } else if (data.code == 4) {
+                                layer.msg("没有权限", {icon: 5});
                             }
                         }
                     });
@@ -145,6 +150,7 @@
             , page: {
                 curr: 1 //重新从第 1 页开始
             }
+            
         });
     }
     //修改
@@ -165,7 +171,7 @@
 
     function loadRoles(user) {
         $("#uid").val(user.id);
-        $.get("roleall.do", null, function (arr) {
+        $.get("roleall", null, function (arr) {
             $("#dv1").html("");
             for (i = 0; i < arr.length; i++) {
                 if(user.rids.indexOf(arr[i].id)>-1){

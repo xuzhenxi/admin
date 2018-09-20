@@ -16,4 +16,8 @@ public interface IUserDao {
     public List<User> findByIndexAndSize(Map<String, Object> map);
     
     public List<String> findWorkById(int id);
+    
+    public void deleteUserById(int id);
+    
+    public User findUserById(int id);
 }

@@ -55,4 +55,29 @@ public class UserService implements IUserService {
 		return list;
 	}
 
+
+	@Override
+	public void deleteUserById(int id) {
+		if (id != 0) {
+			userDao.deleteUserById(id);
+		}
+	}
+	
+	@Override
+	public User findUserById(int id) {
+		User user = new User();
+		if (id != 0) {
+			user = userDao.findUserById(id);
+		}
+		return user;
+	}
+	
+	@Override
+	public User findUserByNo(String no) {
+		User user = new User();
+		if (no != null) {
+			user = userDao.findByNo(no);
+		}
+		return user;
+	}
 }

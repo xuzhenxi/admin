@@ -28,4 +28,8 @@
   	select * from t_role limit #{index},#{size}
   </select>
   
+  <select id="findAllRole" resultMap="roleMap">
+  	select * from t_role
+  </select>
+  
 </mapper>

@@ -10,4 +10,10 @@ public interface IUserService {
 	public PageBean<User> findUserByPage(int page, int size);
 	
 	public List<String> findWorkById(int id);
+	
+	public void deleteUserById(int id);
+	
+	public User findUserById(int id);
+	
+	public User findUserByNo(String no);
 }
