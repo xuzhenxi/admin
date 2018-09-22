@@ -1,5 +1,6 @@
 package com.edu.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.entity.User;
+import com.edu.entity.Userrole;
 import com.edu.service.ILoginlogService;
 import com.edu.service.IUserService;
 import com.edu.service.IUserroleService;
+import com.edu.service.impl.UserroleService;
 import com.edu.utils.IpGet;
 import com.edu.utils.MD5Utils;
 import com.edu.vo.JsonBean;
 import com.edu.vo.PageBean;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 @Controller
 public class UserController {
@@ -35,7 +39,7 @@ public class UserController {
 	private ILoginlogService loginlogService;
 	
 	@Autowired
-	private IUserroleService userrolrService;
+	private IUserroleService userroleService;
 	
 	@RequestMapping("/login1")
 	public String login(String no, String pass, HttpServletRequest request){
@@ -59,11 +63,26 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping("/userloginout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+			return "redirect:login.html";
+		} else {
+			return "redirect:login.html";
+
+		}
+	}
+	
 	@RequestMapping("/userall")
 	@ResponseBody
-	public Map<String, Object> findAllUser(int page, int limit){
+	public Map<String, Object> findAllUser(int page, int limit, String no, Integer flag){
 		Map<String, Object> map = new HashMap<>();
-		PageBean<User> pageInfo = userService.findUserByPage(page, limit);
+		if (flag == null) {
+			flag = 0;
+		}
+		PageBean<User> pageInfo = userService.findUserByPage(page, limit, no, flag);
 		map.put("code", 0);  //针对layui的表格，0表示成功
 		map.put("msg", "");
 		map.put("count", pageInfo.getCount());
@@ -76,15 +95,23 @@ public class UserController {
 	@ResponseBody
 	public JsonBean findWorkById(int id) {
 		List<String> list = null;
+		List<Userrole> list1 = null;
+
 		JsonBean bean = new JsonBean();
+		
 		try {
-			list = userService.findWorkById(id);
-			bean.setCode(1);
-			bean.setMsg(list);
+			list1 = userroleService.findByUid(id);
+			if (list1.size() == 0) {
+				bean.setCode(2);
+			} else {
+				list = userService.findWorkById(id);
+				bean.setCode(1);
+				bean.setMsg(list);
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			bean.setCode(0);
-			bean.setMsg(e.getMessage());
+				e.printStackTrace();
+				bean.setCode(0);
+				bean.setMsg(e.getMessage());
 		}
 		return bean;
 	}
@@ -108,7 +135,7 @@ public class UserController {
 			bean.setCode(4);
 			bean.setMsg("没有权限");
 		} else {
-			userrolrService.deleteByUid(id);
+			userroleService.deleteByUid(id);
 			userService.deleteUserById(id);
 			bean.setCode(1);
 			bean.setMsg("删除成功");
@@ -116,7 +143,47 @@ public class UserController {
 		
 		return bean;
 	}
-
+	
+	@RequestMapping("/userroleall")
+	@ResponseBody
+	public JsonBean findUserroleByUid(int uid) {
+		JsonBean bean = new JsonBean();
+		List<Userrole> list = null;
+		
+		try {
+			list = userroleService.findByUid(uid);
+			Integer[] arr = new Integer[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				arr[i] = list.get(i).getRid();
+			}
+			bean.setCode(1);
+			bean.setMsg(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/userroleedit")
+	@ResponseBody
+	public JsonBean updateUserrole(int id, Integer[] rids) {
+		JsonBean bean = new JsonBean();
+		
+		if (id != 0) {
+			try {
+				userroleService.updateRole(rids, id);
+				bean.setCode(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+				bean.setCode(0);
+			}
+		}
+		
+		return bean;
+	}
 }
 
 

@@ -14,4 +14,6 @@ public interface IRoleDao {
     public int count();
     
     public List<Role> findAllRole();
+    
+    public void deleteById(int id);
 }

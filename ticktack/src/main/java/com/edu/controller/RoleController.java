@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.entity.Role;
+import com.edu.entity.Userrole;
 import com.edu.service.IRoleService;
+import com.edu.service.IUserroleService;
 import com.edu.vo.JsonBean;
 import com.edu.vo.PageBean;
 
@@ -19,6 +21,9 @@ public class RoleController {
 	
 	@Autowired
 	private IRoleService roleService;
+	
+	@Autowired
+	private IUserroleService userroleService;
 	
 	@RequestMapping("/rolepage")
 	@ResponseBody
@@ -52,4 +57,46 @@ public class RoleController {
 		
 		return bean;
 	}
+	
+	@RequestMapping("/roledel")
+	@ResponseBody
+	public JsonBean deleteById(int id) {
+		JsonBean bean = new JsonBean();
+		Userrole userrole = new Userrole();
+		List<Userrole> list = null;
+		
+		list = userroleService.findByRid(id);
+		if (id != 0) {
+			try {
+				if (list.size() == 0) {
+					roleService.deleteById(id);
+					bean.setCode(1);
+				} else {
+					bean.setCode(2);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				bean.setCode(0);
+				bean.setMsg(e.getMessage());
+			}
+		}
+		
+		return bean;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

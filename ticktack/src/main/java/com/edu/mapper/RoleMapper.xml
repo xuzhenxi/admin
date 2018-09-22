@@ -32,4 +32,8 @@
   	select * from t_role
   </select>
   
+  <delete id="deleteById" parameterType="int">
+  	delete from t_role where id=#{id}
+  </delete>
+  
 </mapper>

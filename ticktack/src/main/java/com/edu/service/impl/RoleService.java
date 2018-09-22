@@ -56,4 +56,11 @@ public class RoleService implements IRoleService{
 		return list;
 	}
 
+	@Override
+	public void deleteById(int id) {
+		if (id != 0) {
+			roleDao.deleteById(id);
+		}
+	}
+
 }

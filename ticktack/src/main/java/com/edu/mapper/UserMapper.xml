@@ -20,13 +20,26 @@
   </select>
   
   <!-- 获取用户总数 -->
-  <select id="count" resultType="int">
-  	select count(1) from t_user
+  <select id="count" parameterType="map" resultType="int">
+  	select count(1) from t_user where 1=1
+  	<if test="no != null">
+        and no like #{no}
+    </if>
+  	<if test="flag != 0">
+        and flag=#{flag}
+    </if>
   </select>
   
   <!-- 分页查询用户 -->
   <select id="findByIndexAndSize" parameterType="map" resultMap="userMap">
-  	select * from t_user limit #{index},#{size}
+  	select * from t_user where 1=1
+  	<if test="no != null">
+        and no like #{no}
+    </if>
+  	<if test="flag != 0">
+        and flag=#{flag}
+    </if>
+  	limit #{index},#{size}
   </select>
   
   <select id="findWorkById" parameterType="int" resultType="String">

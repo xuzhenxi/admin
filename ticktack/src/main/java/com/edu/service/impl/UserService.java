@@ -20,13 +20,23 @@ public class UserService implements IUserService {
 	
 
 	@Override
-	public PageBean<User> findUserByPage(int page, int size) {
+	public PageBean<User> findUserByPage(int page, int size, String no, int flag) {
+		if (no != null && !no.equals("")) {
+			no = "%" + no + "%";
+		} else {
+			no=null;
+		}
+		
 		PageBean<User> pageInfo = new PageBean<>();
 		
 		pageInfo.setPageSize(size);
 		pageInfo.setCurrentPage(page);
 		
-		int count = userDao.count();
+		Map<String, Object> fmap = new HashMap<>();
+		fmap.put("no", no);
+		fmap.put("flag", flag);
+		
+		int count = userDao.count(fmap);
 		pageInfo.setCount(count);
 		
 		if (count % size == 0) {
@@ -39,6 +49,8 @@ public class UserService implements IUserService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
 		map.put("size", size);
+		map.put("no", no);
+		map.put("flag", flag);
 		List<User> list = userDao.findByIndexAndSize(map);
 		pageInfo.setPageInfos(list);
 		
@@ -80,4 +92,18 @@ public class UserService implements IUserService {
 		}
 		return user;
 	}
+
+
+	
 }
+
+
+
+
+
+
+
+
+
+
+

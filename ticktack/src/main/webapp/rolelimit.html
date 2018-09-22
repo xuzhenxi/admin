@@ -48,7 +48,7 @@
 	<div class="layui-col-md11">
 		<table id="tbdata" lay-filter="tbop"></table>
 		<script type="text/html" id="barop">
-			<a class="layui-btn layui-btn-mini" lay-event="edit">查看权限</a>
+			<a class="layui-btn layui-btn-mini" lay-event="show">查看权限</a>
 			<a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
 			<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
 		</script>
@@ -81,11 +81,11 @@
             if (obj.event === 'del') {
                 layer.confirm('是否确认删除角色?', function (index) {
                     $.ajax({
-                        url: "userdel.do",
-                        type: "POST",
+                        url: "roledel",
+                        type: "post",
                         data: "id=" + data.id,
                         success: function (data) {
-                            if (data.code == 1000) {
+                            if (data.code == 1) {
                                 obj.del();//删除表格中的对应行数据
                                 layer.close(index);
                                 layer.msg("删除成功", {icon: 6});
@@ -97,6 +97,8 @@
                 });
             } else if (obj.event === 'edit') {//编辑 修改
                 loadRoles(data);
+            } else if (obj.event == 'show') {
+            	loadRoles1(data);
             }
         });
     });
@@ -163,6 +165,31 @@
                     layer.close(index);
                 },cancel: function(){
                 }
+            });
+        })
+    }
+    
+    function loadRoles1(user) {
+        console.log(user)
+        $("#uid").val(user.id);
+        $.get("roleall.do", null, function (arr) {
+            $("#dv1").html("");
+            console.log(user.rids);
+            for (i = 0; i < arr.length; i++) {
+                if(user.rids.indexOf(arr[i].id)>-1){
+                    $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\" checked>");
+                }else{
+                    $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\">");
+                }
+            }
+            form1.render();
+            layer.open({
+                area: ['500px', '300px'],
+                title: '查看角色权限',
+                type: 1,
+                content:  $('#dvlay'), //这里content是一个普通的String
+                btn: ['返回'],
+                
             });
         })
     }

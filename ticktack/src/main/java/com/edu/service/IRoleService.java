@@ -10,4 +10,6 @@ public interface IRoleService {
 	public PageBean<Role> findAllRoleByPage(int page, int size);
 	
 	public List<Role> findAllRole();
+	
+	public void deleteById(int id);
 }

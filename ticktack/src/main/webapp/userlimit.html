@@ -27,6 +27,7 @@
                 <label class="layui-form-label">用户：</label>
                 <div class="layui-input-block">
                     <select class="layui-input" id="fg">
+                        <option value="0">账号状态：</option>
                         <option value="1">有效</option>
                         <option value="2">无效</option>
                     </select>
@@ -87,6 +88,8 @@
                 					t += "<span>[" + (i+1) + "-" + info[i] + "]</span>&nbsp";
                 				}
                 				s += t;
+                			}else if(data.code == 2){
+                				s += "无职位";
                 			}
                 		}
                 	
@@ -154,7 +157,7 @@
         });
     }
     //修改
-    function changeRole() {
+   /*  function changeRole() {
         $.ajax({
             url: "userroleedit.do",
             data: $("#fm1").serialize(),
@@ -167,14 +170,29 @@
                 layer.closeAll();
             }
         })
-    }
+    } */
 
     function loadRoles(user) {
         $("#uid").val(user.id);
-        $.get("roleall", null, function (arr) {
+        $.get("roleall", null, function (data) {
             $("#dv1").html("");
+            var arr= new Array(); //定义一数组 
+            arr = data.msg;
+            var info;
+            $.ajax({
+        		type:"get",
+        		async:false,
+        		url:"userroleall?uid=" + user.id,
+        		dataType:"json",
+        		success:function(data1){
+        			if (data1.code == 1){
+        				info = data1.msg;
+        			}
+        		}
+        	
+        	})
             for (i = 0; i < arr.length; i++) {
-                if(user.rids.indexOf(arr[i].id)>-1){
+                if(info.indexOf(arr[i].id) > -1){
                     $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\" checked>");
                 }else{
                     $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\">");
@@ -189,10 +207,10 @@
                 btn: ['确认', '取消'],
                 yes: function(index, layero){
                     $.ajax({
-                        url: "userroleedit.do",
+                        url: "userroleedit",
                         data: $("#fm1").serialize(),
                         success: function (obj) {
-                            if (obj.code == 1000) {
+                            if (obj.code == 1) {
                                 layer.msg("编辑权限成功");
                                 searchData();
                             } else {
@@ -211,7 +229,7 @@
 <div style="display: none;margin-top: 10px;width: 480px" id="dvlay">
     <form id="fm1" class="layui-form layui-form-pane" >
         <div class="layui-form-item" pane >
-            <label class="layui-form-label">工号：</label>
+            <label class="layui-form-label">序号：</label>
             <div class="layui-input-inline">
                 <input id="uid" name="id" readonly class="layui-input">
             </div>

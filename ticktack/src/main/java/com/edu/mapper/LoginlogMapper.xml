@@ -13,7 +13,7 @@
   </sql>
   
   <select id="findAllLoginlogByIndexAndSize" resultMap="loginlogMap">
-  	select * from t_loginlog order by id desc
+  	select * from t_loginlog order by id desc limit #{index},#{size}
   </select>
   
   <select id="count" resultType="int">

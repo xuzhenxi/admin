@@ -11,7 +11,7 @@ public interface IUserDao {
     
     public User findByNo(String no);
     
-    public int count();
+    public int count(Map<String, Object> map);
     
     public List<User> findByIndexAndSize(Map<String, Object> map);
     
@@ -20,4 +20,6 @@ public interface IUserDao {
     public void deleteUserById(int id);
     
     public User findUserById(int id);
+    
+    public List<User> search(Map<String, Object> map);
 }

@@ -10,4 +10,16 @@
     delete from t_userrole where uid = #{uid}
   </delete>
   
+  <select id="findByUid" parameterType="int" resultMap="userroleMap">
+  	select * from t_userrole where uid=#{uid}
+  </select>
+  
+  <insert id="addUserrole" parameterType="Userrole">
+  	insert into t_userrole(uid,rid) value(#{uid}, #{rid})
+  </insert>
+  
+  <select id="findByRid" parameterType="int" resultMap="userroleMap">
+  	select * from t_userrole where rid=#{rid}
+  </select>
+  
 </mapper>
