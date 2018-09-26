@@ -17,6 +17,7 @@
     <result column="parentId" jdbcType="INTEGER" property="parentid" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
     
     <collection property="auth"
     	fetchType="eager"
@@ -24,9 +25,19 @@
     	ofType="com.edu.entity.Authority"
     	column="id"
     	select="com.edu.dao.IAuthorityDao.findSonById">
-    	
     
     </collection>
+  </resultMap>
+  
+  <resultMap id="authMap3" type="Authority">
+    <id column="id1" jdbcType="INTEGER" property="id" />
+    <result column="aicon1" jdbcType="VARCHAR" property="aicon" />
+    <result column="aurl1" jdbcType="VARCHAR" property="aurl" />
+    <result column="parentId1" jdbcType="INTEGER" property="parentid" />
+    <result column="title1" jdbcType="VARCHAR" property="title" />
+    <result column="type1" jdbcType="INTEGER" property="type" />
+    <result column="uid1" jdbcType="INTEGER" property="uid" />
+    
   </resultMap>
   
   <sql id="Base_Column_List">
@@ -57,12 +68,12 @@
  	on r.id=ra.rid
  	inner join t_authority a
  	on ra.aid=a.id
- 	where u.no=#{no} and a.parentid=0
+ 	where u.no=#{no} and a.parentId=0
   </select>
   
   <select id="findSonById" parameterType="int" resultMap="authMap2">
   	select * from t_authority 
- 	where parentid=#{id}
+ 	where parentId=#{id}
   </select>
   
   <select id="count" resultType="int">
@@ -72,6 +83,85 @@
   <select id="findAllAuthByPage" parameterType="map" resultMap="authMap">
   	select * from t_authority limit #{index},#{size}
   </select>
+  
+  <select id="findSonTitle" parameterType="map" resultMap="authMap3">
+ 	select aa.id as id1, aa.aicon as aicon1, aa.parentId as parentId1, aa.title as title1, aa.aurl as aurl1, u.id as uid1 from t_user u
+ 	inner join t_userrole ur
+ 	on u.id=ur.uid
+ 	inner join t_role r
+ 	on ur.rid=r.id
+ 	inner join t_roleauthority ra
+ 	on r.id=ra.rid
+ 	inner join t_authority aa
+ 	on ra.aid=aa.id
+  	inner join t_authority a
+ 	on a.id=aa.parentId
+ 	
+ 	where u.id=#{uid} and aa.parentId=#{id}
+  </select>
+  
+  <select id="findByRid" parameterType="int" resultMap="authMap">
+  	select a.id from t_role r
+	inner join t_roleauthority ra
+	on r.id=ra.rid
+	inner join t_authority a
+	on ra.aid=a.id 
+	where r.id=#{id}
+  
+  </select>
+  
+  <select id="findAllTitle" resultType="Authority">
+  	select a.id, a.title, a.parentid from t_authority a
+  </select>
+  
+  <!-- 按父级权限id查询权限 -->
+  <select id="findByParentId" parameterType="int" resultType="Authority">
+  	select * from t_authority where parentid=#{parentId}
+  </select>
+  
+  <!-- 添加权限 -->
+  <insert id="addAuth" parameterType="Authority">
+  	insert into t_authority(aicon, aurl, parentId, title, type) value(#{aicon}, #{aurl}, #{parentid}, #{title}, #{type})
+  </insert>
+  
+  <!-- 修改权限 -->
+   <update id="updateAuth" parameterType="Authority">
+    update t_authority
+    <set>
+      <if test="aicon != null">
+        aicon = #{aicon},
+      </if>
+      <if test="aurl != null">
+        aurl = #{aurl},
+      </if>
+      <if test="parentid != null">
+        parentId = #{parentid},
+      </if>
+      <if test="title != null">
+        title = #{title},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <!-- 删除权限 -->
+  <delete id="deleteAuth" parameterType="int">
+  	delete from t_authority where id=#{id}
+  </delete>
+  
+  <!-- 通过id查找权限 -->
+  <select id="findAuthById" parameterType="int" resultType="Authority">
+  	select * from t_authority where id=#{id}
+  </select>
+  
+  <!-- 通过名称查找权限 -->
+  <select id="findAuthByTitile" parameterType="String" resultType="Authority">
+  	select * from t_authority where title=#{title}
+  </select>
+  
 </mapper>
 
 

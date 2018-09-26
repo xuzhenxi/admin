@@ -17,7 +17,7 @@
     no, name, did, flag, sex, email, qq, phone, createdate, photo
   </sql>
   
-  <select id="count" resultType="int">
+  <select id="findCountByDid" parameterType="int" resultType="int">
   	select count(1) from t_staff where did=#{did}
   </select>
   

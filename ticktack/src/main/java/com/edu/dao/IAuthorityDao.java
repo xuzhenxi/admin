@@ -19,4 +19,26 @@ public interface IAuthorityDao {
     public int count();
     
     public List<Authority> findAllAuthByPage(Map<String, Object> map);
+    
+    public List<Integer> findTitleByRid(int rid);
+    
+    public List<Authority> findAllTitle();
+    
+    public List<Authority> findByParentId(int parentId);
+    
+    public void addAuth(Authority auth);
+    
+    public void deleteAuth(Integer aid);
+    
+    public void updateAuth(Authority auth);
+    
+    public Authority findAuthById(int id);
+    
+    public List<Authority> findAuthByTitile(String title);
+    
+    public List<Authority> findSonTitle(Map<String, Object> map);
+    
+    
+    
+    
 }

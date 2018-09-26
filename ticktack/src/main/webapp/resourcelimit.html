@@ -62,11 +62,11 @@
 		        if(obj.event === 'del'){
 		            layer.confirm('是否确认删除权限?', function(index){
 		                $.ajax({
-		                    url: "coursedelete.do",
+		                    url: "authdelete",
 		                    type: "POST",
 		                    data:"id="+data.id,
 		                    success: function(data){
-		                        if(data.code==1000){
+		                        if(data.code==1){
 		                            obj.del();//删除表格中的对应行数据
 		                            layer.close(index);
 		                            layer.msg("删除成功", {icon: 6});
@@ -79,11 +79,77 @@
 		        } else if(obj.event === 'edit'){//编辑 修改
 		        	//get传递参数有中文，必须编码
 		        	//JSON.stringify 将对象转换为字符串
-		           location.href="courseupdate.html?d="+ encodeURI(JSON.stringify(data));
+		        	editAuth(data);
 		        }
 		});
 	});
+	function editAuth(auth) {
+		$("#title").val(auth.title);
+		 $("#aicon").val(auth.aicon);
+		 $("#aurl").val(auth.aurl);
+		 $("#id").val(auth.id);
+		 
+		 $("#dvl1").css("display","none");
+		 $("#spid").empty();
+		 $("#dv1").empty();
+		 $("#dv1").html("");
+		 if(auth.parentId == 0) {
+			 $("#dv1").append("<input type='radio' name='pid' value='0' lay-filter='level' title='一级' checked>");
+			 $("#dv1").append("<input type='radio' name='pid' value='-1' lay-filter='level' title='二级' >");
+		 } else {
+			 $("#dv1").append("<input type='radio' name='pid' value='0' lay-filter='level' title='一级' >");
+			 $("#dv1").append("<input type='radio' name='pid' value='-1' lay-filter='level' title='二级' checked>");
+			 changePid(-1, auth);
+		 }
+		 
+		 form.render();
+		 layer.open({
+	            area: ['500px', '380px'],
+	            title: '编辑权限页面',
+	            type: 1,
+	            content:  $('#dvlay'), //这里content是一个普通的String
+	            btn: ['确定', '取消'],
+	            yes: function(index, layero){
+	            	
+	            	var options=$("#spid option:selected"); 
+	            	$("#pid").val($(options).val());
+	            	var pid = $("input[type='radio']:checked").val();
+	            	if (pid == 0) {
+	            		$("#pid").val(pid);
+	            	}
+	            	
+	                $.ajax({
+	                    url: "autyedit",
+						method:"post",
+	                    data: $("#fm1").serialize(),
+	                    success: function (data) {
+	                        if (data.code == 1) {
+	                            layer.msg("修改权限成功");
+	                        } else {
+	                            layer.msg("修改权限失败");
+	                        }
+	                    }
+	                })
+	                layer.close(index);
+	                tableIns.reload();
+	                
+	            },cancel: function(){
+	            	
+	            }
+	        });
+	}
 	function addAuth() {
+		$("#dvl1").css("display","none");
+		$("#spid").empty();
+		$("#dvl").empty(); 	
+		$("#dv1").html("");
+		$("#dv1").append("<input type='radio' name='pid' value='0' lay-filter='level' title='一级' checked>");
+		$("#dv1").append("<input type='radio' name='pid' value='-1' lay-filter='level' title='二级' >");
+		 
+		$("#title").val(null);
+		$("#aicon").val(null);
+		$("#aurl").val(null);
+		form.render();
         layer.open({
             area: ['500px', '380px'],
             title: '权限页面新增',
@@ -91,36 +157,54 @@
             content:  $('#dvlay'), //这里content是一个普通的String
             btn: ['新增', '取消'],
             yes: function(index, layero){
+            	
+            	var options=$("#spid option:selected"); 
+            	$("#pid").val($(options).val());
+            	var pid = $("input[type='radio']:checked").val();
+            	if (pid == 0) {
+            	$("#pid").val(pid);
+            	}
+            	
                 $.ajax({
-                    url: "authorityadd.do",
+                    url: "authorityadd",
 					method:"post",
                     data: $("#fm1").serialize(),
                     success: function (obj) {
-                        if (obj.code == 1000) {
+                        if (obj.code == 1) {
                             layer.msg("新增权限成功");
-                            searchData();
                         } else {
                             layer.msg("新增权限失败");
                         }
                     }
                 })
                 layer.close(index);
+                tableIns.reload();
             },cancel: function(){
             }
         });
     }
-    function changePid(i) {
+    function changePid(i,auth) {
+    	$("#spid").empty();
 		if(i==-1){
-            $.get("authorityroot.do",null,function (arr) {
-				for(i=0;i<arr.length;i++){
-                    $("#spid").append("<option value=\""+arr[i].id+"\">"+arr[i].title+"</option>");
-				}
-            $("#dvl1").css("display","block");
+            $.get("authorityroot",null,function (data) {
+            	var arr = data.msg;
+            	$(arr).each(function () {
+            		if (auth != null) {
+            			if (auth.parentId == this.id) {
+                	    	$("#spid").append("<option value='" + this.id + "' selected='selected'>" + this.title + "</option>");
+            			} else {
+                	    	$("#spid").append("<option value='" + this.id + "'>" + this.title + "</option>");
+            			}
+            		} else {
+            			$("#spid").append("<option value='" + this.id + "'>" + this.title + "</option>");
+            		} 
+				})
+			$("#dvl1").css("display","block");
             form.render();
             });
-		}else{
+   		}else{
             $("#dvl1").css("display","none");
-		    $("#pid").val(i);
+   		    $("#pid").val(i);
 		}
     }
     function setPid(obj) {
@@ -133,29 +217,28 @@
 		<div class="layui-form-item"  >
 			<label class="layui-form-label">名称：</label>
 			<div class="layui-input-inline">
-				<input name="title" class="layui-input">
+				<input name="title" class="layui-input" id="title">
+				<input type="hidden" name="id" class="layui-input" id="id">
 			</div>
 		</div>
 		<div class="layui-form-item"  >
 			<label class="layui-form-label">图标：</label>
 			<div class="layui-input-inline">
-				<input name="aicon" class="layui-input">
+				<input name="aicon" class="layui-input" id="aicon">
 			</div>
 		</div>
 		<div class="layui-form-item" >
 			<label class="layui-form-label">路径：</label>
 			<div class="layui-input-inline">
-				<input name="aurl" class="layui-input">
+				<input name="aurl" class="layui-input" id="aurl">
 			</div>
 		</div>
 		<div class="layui-form-item" >
 			<label class="layui-form-label">级别：</label>
-			<div class="layui-input-inline">
-				<input type="radio" name="pid" value="0" lay-filter="level"  title="一级" checked>
-				<input type="radio" name="pid" value="-1" lay-filter="level"   title="二级" >
+			<div class="layui-input-inline" id="dv1">
 			</div>
 		</div>
-		<input type="hidden" name="parentId" id="pid">
+		<input type="hidden" name="parentid" id="pid">
 		<div class="layui-form-item" id="dvl1" style="display: none" >
 			<label class="layui-form-label">上级路径：</label>
 			<div class="layui-input-inline">

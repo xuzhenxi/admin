@@ -1,6 +1,5 @@
 package com.edu.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,10 @@ import com.edu.entity.Userrole;
 import com.edu.service.ILoginlogService;
 import com.edu.service.IUserService;
 import com.edu.service.IUserroleService;
-import com.edu.service.impl.UserroleService;
 import com.edu.utils.IpGet;
 import com.edu.utils.MD5Utils;
 import com.edu.vo.JsonBean;
 import com.edu.vo.PageBean;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 @Controller
 public class UserController {

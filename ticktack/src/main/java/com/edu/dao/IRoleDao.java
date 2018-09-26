@@ -11,9 +11,13 @@ public interface IRoleDao {
     
     public List<Role> findAllRoleByPage(Map<String, Object> map);
     
-    public int count();
+    public int count(Map<String, Object> map);
     
     public List<Role> findAllRole();
     
     public void deleteById(int id);
+    
+    public List<Role> findAllSonOfRole();
+    
+    public void deleteParentIdById(int id);
 }

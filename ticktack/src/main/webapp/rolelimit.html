@@ -18,18 +18,15 @@
 			<div class="layui-form-item layui-form-text">
 				<label class="layui-form-label">角色名称：</label>
 				<div class="layui-input-block">
-					<input type="text" id="no" class="layui-input" placeholder="角色名称">
+					<input type="text" id="name" class="layui-input" placeholder="角色名称">
 				</div>
 			</div>
 		</div>
 		<div class="layui-col-xs3" style="margin-right: 20px">
 			<div class="layui-form-item layui-form-text">
-				<label class="layui-form-label">用户：</label>
+				<label class="layui-form-label">角色备注：</label>
 				<div class="layui-input-block">
-					<select class="layui-input" id="fg">
-						<option value="1">有效</option>
-						<option value="2">无效</option>
-					</select>
+					<input type="text" id="info" class="layui-input" placeholder="角色备注">
 				</div>
 			</div>
 		</div>
@@ -105,8 +102,8 @@
     function searchData() {
         tableIns.reload({
             where: { //设定异步数据接口的额外参数，任意设
-                no: $("#no").val()
-                , flag: $("#fg").val()
+                info: $("#info").val()
+                , name: $("#name").val()
             }
             // , page: {
             //     curr: 1 //重新从第 1 页开始
@@ -129,19 +126,41 @@
         })
     }
 
-    function loadRoles(user) {
-        console.log(user)
-        $("#uid").val(user.id);
-        $.get("roleall.do", null, function (arr) {
+    function loadRoles(role) {
+        console.log(role)
+        $("#rid").val(role.id);
+        $.get("sonroleall", null, function (data) {
             $("#dv1").html("");
-            console.log(user.rids);
-            for (i = 0; i < arr.length; i++) {
+            /* console.log(role.parentid); */
+            if(data.code == 1){
+            	var info = data.msg;
+            	var flag = 0;
+            	$(info).each(function(){
+            		if (role.id < this.id) {
+            			if(this.parentid == role.id){
+                            $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + this.id + "' title=\"" + this.info + "\" checked>");
+                        }else{
+                            $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + this.id + "' title=\"" + this.info + "\">");
+                        }
+            		}else{
+            			flag += 1;
+            		}
+            		
+            	})
+                if(info.length <= flag) {
+                    $("#dv1").append("没有可用权限");
+
+                }
+
+            }
+            
+            /* for (i = 0; i < arr.length; i++) {
                 if(user.rids.indexOf(arr[i].id)>-1){
                     $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\" checked>");
                 }else{
                     $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\">");
                 }
-            }
+            } */
             form1.render();
             layer.open({
                 area: ['500px', '300px'],
@@ -151,7 +170,7 @@
                 btn: ['确认', '取消'],
                 yes: function(index, layero){
                     $.ajax({
-                        url: "userroleedit.do",
+                        url: "roleedit",
                         data: $("#fm1").serialize(),
                         success: function (obj) {
                             if (obj.code == 1000) {
@@ -169,25 +188,48 @@
         })
     }
     
-    function loadRoles1(user) {
-        console.log(user)
-        $("#uid").val(user.id);
-        $.get("roleall.do", null, function (arr) {
-            $("#dv1").html("");
-            console.log(user.rids);
+    function loadRoles1(role) {
+        console.log(role)
+        $("#rid2").val(role.id);
+        $.get("sonroleall", null, function (data) {
+            $("#dv2").html("");
+            if(data.code == 1){
+            	var info = data.msg;
+            	var flag = 0;
+            	$(info).each(function(){
+            		if (role.id < this.id) {
+            			if(this.parentid == role.id){
+                            $("#dv2").append("<input type=\"checkbox\" name=\"rids\" value='" + this.id + "' title=\"" + this.info + "\" checked>");
+                        }else{
+                            $("#dv2").append("<input type=\"checkbox\" name=\"rids\" value='" + this.id + "' title=\"" + this.info + "\">");
+                        }
+            		}else{
+            			flag += 1;
+            		}
+            		
+            	})
+                if(info.length <= flag) {
+                    $("#dv2").append("\n没有可用权限");
+
+                }
+
+            }
+            
+            
+            /* console.log(user.rids);
             for (i = 0; i < arr.length; i++) {
                 if(user.rids.indexOf(arr[i].id)>-1){
                     $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\" checked>");
                 }else{
                     $("#dv1").append("<input type=\"checkbox\" name=\"rids\" value='" + arr[i].id + "' title=\"" + arr[i].info + "\">");
                 }
-            }
+            } */
             form1.render();
             layer.open({
                 area: ['500px', '300px'],
                 title: '查看角色权限',
                 type: 1,
-                content:  $('#dvlay'), //这里content是一个普通的String
+                content:  $('#dvlay2'), //这里content是一个普通的String
                 btn: ['返回'],
                 
             });
@@ -200,12 +242,28 @@
 		<div class="layui-form-item" pane >
 			<label class="layui-form-label">序号：</label>
 			<div class="layui-input-inline">
-				<input id="uid" name="id" readonly class="layui-input">
+				<input id="rid" name="id" readonly class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item" pane>
 			<label class="layui-form-label">权限：</label>
 			<div class="layui-input-inline" id="dv1">
+
+			</div>
+		</div>
+	</form>
+</div>
+<div style="display: none;margin-top: 10px;width: 480px" id="dvlay2">
+	<form id="fm2" class="layui-form layui-form-pane" >
+		<div class="layui-form-item" pane >
+			<label class="layui-form-label">序号：</label>
+			<div class="layui-input-inline">
+				<input id="rid2" name="id" readonly class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item" pane>
+			<label class="layui-form-label">权限：</label>
+			<div class="layui-input-inline" id="dv2">
 
 			</div>
 		</div>

@@ -17,8 +17,18 @@ public class Authority {
     
     private List<Authority> auth;
     
+    private Integer uid;
+    
 
-    public List<Authority> getAuth() {
+	public Integer getUid() {
+		return uid;
+	}
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+
+	public List<Authority> getAuth() {
 		return auth;
 	}
 

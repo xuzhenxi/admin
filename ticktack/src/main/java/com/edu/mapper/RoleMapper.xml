@@ -20,12 +20,25 @@
   	where u.no=#{no}
   </select>
   
-  <select id="count" resultType="int">
-  	select count(1) from t_role
+  <select id="count" parameterType="map" resultType="int">
+  	select count(1) from t_role where 1=1
+  	<if test="no != null">
+        and info like #{info}
+    </if>
+  	<if test="flag != 0">
+        and name like #{name}
+    </if>
   </select>
   
-  <select id="findAllRoleByPage" parameterType="int" resultMap="roleMap">
-  	select * from t_role limit #{index},#{size}
+  <select id="findAllRoleByPage" parameterType="map" resultMap="roleMap">
+  	select * from t_role where 1=1
+  	<if test="info != null">
+        and info like #{info}
+    </if>
+  	<if test="name != null">
+        and name like #{name}
+    </if>
+  	limit #{index},#{size}
   </select>
   
   <select id="findAllRole" resultMap="roleMap">
@@ -35,5 +48,9 @@
   <delete id="deleteById" parameterType="int">
   	delete from t_role where id=#{id}
   </delete>
+  
+  <select id="findAllSonOfRole" parameterType="int" resultMap="roleMap">
+  	select * from t_role where parentId!=0;
+  </select>
   
 </mapper>

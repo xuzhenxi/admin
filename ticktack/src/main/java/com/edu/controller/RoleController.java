@@ -27,9 +27,9 @@ public class RoleController {
 	
 	@RequestMapping("/rolepage")
 	@ResponseBody
-	public Map<String, Object> findAllRole(int page, int limit){
+	public Map<String, Object> findAllRole(int page, int limit, String info, String name){
 		Map<String, Object> map = new HashMap<>();
-		PageBean<Role> pageInfo = roleService.findAllRoleByPage(page, limit);
+		PageBean<Role> pageInfo = roleService.findAllRoleByPage(page, limit, info, name);
 		
 		map.put("code", 0);  //针对layui的表格，0表示成功
 		map.put("msg", "");
@@ -80,6 +80,26 @@ public class RoleController {
 				bean.setMsg(e.getMessage());
 			}
 		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/sonroleall")
+	@ResponseBody
+	public JsonBean findAllSonRole() {
+		JsonBean bean = new JsonBean();
+		List<Role> list = null;
+		
+		try {
+			list = roleService.findAllSonOfRole();
+			bean.setCode(1);
+			bean.setMsg(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
+		}
+		
 		
 		return bean;
 	}
