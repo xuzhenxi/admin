@@ -7,30 +7,26 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edu.dao.IDepartDao;
-import com.edu.dao.IStaffDao;
+import com.edu.dao.ICourseDao;
+import com.edu.entity.Course;
 import com.edu.entity.Depart;
-import com.edu.entity.User;
-import com.edu.service.IDepartService;
+import com.edu.service.ICourseService;
 import com.edu.vo.PageBean;
 
 @Service
-public class DepartService implements IDepartService {
+public class CourseService implements ICourseService {
 	
 	@Autowired
-	private IDepartDao departDao;
-	
-	@Autowired
-	private IStaffDao staffDao;
+	private ICourseDao courseDao;
 	
 	@Override
-	public PageBean<Depart> findDepartByPage(int page, int size) {
-		PageBean<Depart> pageInfo = new PageBean<>();
+	public PageBean<Course> findCourseByPage(int page, int size) {
+		PageBean<Course> pageInfo = new PageBean<>();
 		
 		pageInfo.setPageSize(size);
 		pageInfo.setCurrentPage(page);
 		
-		int count = departDao.count();
+		int count = courseDao.count();
 		pageInfo.setCount(count);
 		
 		if (count % size == 0) {
@@ -43,30 +39,43 @@ public class DepartService implements IDepartService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
 		map.put("size", size);
-		List<Depart> list = departDao.findByIndexAndSize(map);
+		List<Course> list = courseDao.findByIndexAndSize(map);
 		pageInfo.setPageInfos(list);
 		
 		return pageInfo;
 	}
 
 	@Override
-	public void deleteDepartById(int id) {
+	public void deleteCourseById(int id) {
 		if (id != 0) {
-			departDao.deleteDepartById(id);
+			courseDao.deleteCourseById(id);
 		}
 	}
-
+	
+	public Course findById(int id) {
+		return courseDao.findById(id);
+	}
+	
 	@Override
-	public void updateDepart(Depart depart) {
-		if (depart != null) {
-			departDao.updateDepart(depart);
+	public void updateCourse(Course course) {
+		if (course != null) {
+			courseDao.updateCourse(course);
 		}
 	}
 	
 	@Override
-	public void addDepart(Depart depart) {
-		if (depart != null) {
-			departDao.addDepart(depart);
+	public void addCourse(Course course) {
+		if (course != null) {
+			courseDao.addCourse(course);
 		}
 	}
 }
+
+
+
+
+
+
+
+
+

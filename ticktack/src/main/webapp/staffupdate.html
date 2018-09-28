@@ -79,53 +79,51 @@
 	<script src="media/layui/layui.js"></script>
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 	<script>
-	var form;
-		layui
-				.use(
-						[ 'form','upload', 'layedit', 'laydate' ],
-						function() {
-							form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
-							var upload = layui.upload;
-							   
-							  //执行实例
-							  var uploadInst = upload.render({
-							    elem: '#upfile' //绑定元素
-							    ,url: 'photoupload.do' //上传接口
-							    ,done: function(obj){
-							      //上传完毕回调
-							      console.log(obj);
-							      if(obj.code==1000){
-							    	  $("#p1").val(obj.msg);
-								      $("#img1")[0].src="/tickresource/"+obj.msg;
-							      	  $("#btn1").attr("disabled",false);
-							      }else{
-							    	  $("#img1")[0].src="media/images/cw1.jpg";
-							      }
-							      
-							    }
-							    ,error: function(){
-							      //请求异常回调
-							    }
-							  });
-							//日期
-							laydate.render({
-								elem : '#date'
-							});
-							
+		var form;
+		layui.use([ 'form','upload', 'layedit', 'laydate' ],
+			function() {
+				form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
+				var upload = layui.upload;
+				   
+				  //执行实例
+				  var uploadInst = upload.render({
+				    elem: '#upfile' //绑定元素
+				    ,url: 'photoupload.do' //上传接口
+				    ,done: function(obj){
+				      //上传完毕回调
+				      console.log(obj);
+				      if(obj.code==1000){
+				    	  $("#p1").val(obj.msg);
+					      $("#img1")[0].src="media/images/"+obj.msg;
+				      	  $("#btn1").attr("disabled",false);
+				      }else{
+				    	  $("#img1")[0].src="media/images/cw1.jpg";
+				      }
+				      
+				    }
+				    ,error: function(){
+				      //请求异常回调
+				    }
+				  });
+				//日期
+				laydate.render({
+					elem : '#date'
+				});
+				
 
-							//自定义验证规则
-							form.verify({
-								title : function(value) {
-									if (value.length < 5) {
-										return '标题至少得5个字符啊';
-									}
-								},
-								pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
-								content : function(value) {
-									layedit.sync(editIndex);
-								}
-							});
-					initData();
+				//自定义验证规则
+				form.verify({
+					title : function(value) {
+						if (value.length < 5) {
+							return '标题至少得5个字符啊';
+						}
+					},
+					pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
+					content : function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+				initData();
 		});
 		//初始化数据
 		function initData() {

@@ -2,6 +2,12 @@ package com.edu.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 public class Staff {
     private String no;
 
@@ -18,12 +24,24 @@ public class Staff {
     private String qq;
 
     private String phone;
-
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Date createdate;
 
     private String photo;
+    
+    private Depart dept;
+    
 
-    public String getNo() {
+	public Depart getDept() {
+		return dept;
+	}
+
+	public void setDept(Depart dept) {
+		this.dept = dept;
+	}
+
+	public String getNo() {
         return no;
     }
 
@@ -86,7 +104,8 @@ public class Staff {
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
     }
-
+    
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
     public Date getCreatedate() {
         return createdate;
     }
@@ -102,4 +121,14 @@ public class Staff {
     public void setPhoto(String photo) {
         this.photo = photo == null ? null : photo.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Staff [no=" + no + ", name=" + name + ", did=" + did + ", flag=" + flag + ", sex=" + sex + ", email="
+				+ email + ", qq=" + qq + ", phone=" + phone + ", createdate=" + createdate + ", photo=" + photo
+				+ ", dept=" + dept + "]";
+	}
+    
+    
+    
 }

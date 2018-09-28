@@ -27,8 +27,10 @@
 	</context:component-scan>
 
 	<!-- 使用指定的验证器 -->
-	<mvc:annotation-driven></mvc:annotation-driven>
-
+	<mvc:annotation-driven>
+		<!-- <mvc:path-matching suffix-pattern="false"/> -->
+	</mvc:annotation-driven>
+	
 	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
 	<mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
 	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
@@ -67,6 +69,12 @@
 		</property>
 	</bean>
 	
+	<!-- 文件上传的视图解析器  id的值不能改-->
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+   		<!-- 上传文件的最大大小 ，单位字节 ，比如 1024 * 1024 = 1M-->
+   		<property name="maxUploadSize" value="104857600"></property>
+   
+   </bean>
 	
 	
 </beans>

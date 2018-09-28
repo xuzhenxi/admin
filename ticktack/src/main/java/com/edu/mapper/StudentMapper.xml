@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edu.dao.IStudentDao">
-  <resultMap id="BaseResultMap" type="com.edu.entity.Student">
+  <resultMap id="studentMap" type="Student">
     <id column="no" jdbcType="VARCHAR" property="no" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
@@ -22,189 +22,13 @@
     no, name, sex, birthday, cardno, school, education, gid, flag, email, qq, phone, 
     introno, createdate, photo
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_student
-    where no = #{no,jdbcType=VARCHAR}
+  
+  <select id="findScountById" parameterType="int" resultType="int">
+  	select count(1) from t_student where gid=#{id}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from t_student
-    where no = #{no,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.edu.entity.Student">
-    insert into t_student (no, name, sex, 
-      birthday, cardno, school, 
-      education, gid, flag, 
-      email, qq, phone, introno, 
-      createdate, photo)
-    values (#{no,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
-      #{birthday,jdbcType=DATE}, #{cardno,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
-      #{education,jdbcType=VARCHAR}, #{gid,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
-      #{email,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{introno,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=DATE}, #{photo,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.edu.entity.Student">
-    insert into t_student
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="no != null">
-        no,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="birthday != null">
-        birthday,
-      </if>
-      <if test="cardno != null">
-        cardno,
-      </if>
-      <if test="school != null">
-        school,
-      </if>
-      <if test="education != null">
-        education,
-      </if>
-      <if test="gid != null">
-        gid,
-      </if>
-      <if test="flag != null">
-        flag,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="qq != null">
-        qq,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="introno != null">
-        introno,
-      </if>
-      <if test="createdate != null">
-        createdate,
-      </if>
-      <if test="photo != null">
-        photo,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="no != null">
-        #{no,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="birthday != null">
-        #{birthday,jdbcType=DATE},
-      </if>
-      <if test="cardno != null">
-        #{cardno,jdbcType=VARCHAR},
-      </if>
-      <if test="school != null">
-        #{school,jdbcType=VARCHAR},
-      </if>
-      <if test="education != null">
-        #{education,jdbcType=VARCHAR},
-      </if>
-      <if test="gid != null">
-        #{gid,jdbcType=INTEGER},
-      </if>
-      <if test="flag != null">
-        #{flag,jdbcType=INTEGER},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null">
-        #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="introno != null">
-        #{introno,jdbcType=VARCHAR},
-      </if>
-      <if test="createdate != null">
-        #{createdate,jdbcType=DATE},
-      </if>
-      <if test="photo != null">
-        #{photo,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.edu.entity.Student">
-    update t_student
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="birthday != null">
-        birthday = #{birthday,jdbcType=DATE},
-      </if>
-      <if test="cardno != null">
-        cardno = #{cardno,jdbcType=VARCHAR},
-      </if>
-      <if test="school != null">
-        school = #{school,jdbcType=VARCHAR},
-      </if>
-      <if test="education != null">
-        education = #{education,jdbcType=VARCHAR},
-      </if>
-      <if test="gid != null">
-        gid = #{gid,jdbcType=INTEGER},
-      </if>
-      <if test="flag != null">
-        flag = #{flag,jdbcType=INTEGER},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null">
-        qq = #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="introno != null">
-        introno = #{introno,jdbcType=VARCHAR},
-      </if>
-      <if test="createdate != null">
-        createdate = #{createdate,jdbcType=DATE},
-      </if>
-      <if test="photo != null">
-        photo = #{photo,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where no = #{no,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.edu.entity.Student">
-    update t_student
-    set name = #{name,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      birthday = #{birthday,jdbcType=DATE},
-      cardno = #{cardno,jdbcType=VARCHAR},
-      school = #{school,jdbcType=VARCHAR},
-      education = #{education,jdbcType=VARCHAR},
-      gid = #{gid,jdbcType=INTEGER},
-      flag = #{flag,jdbcType=INTEGER},
-      email = #{email,jdbcType=VARCHAR},
-      qq = #{qq,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      introno = #{introno,jdbcType=VARCHAR},
-      createdate = #{createdate,jdbcType=DATE},
-      photo = #{photo,jdbcType=VARCHAR}
-    where no = #{no,jdbcType=VARCHAR}
-  </update>
+  
+  <select id="findByGid" parameterType="int" resultMap="studentMap">
+  	select * from t_student where gid=#{id}
+  </select>
+  
 </mapper>

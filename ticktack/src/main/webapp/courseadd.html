@@ -8,11 +8,12 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
+<script src="media/js/jquery.min.js"></script>
 </head>
 <body>
 
 	<div class="layui-container" style="margin-top: 5px">
-		<form class="layui-form" action="courseadd.do" method="post">
+		<form class="layui-form" action="" method="post">
 			<div class="layui-form-item">
 				<label class="layui-form-label">学科名称</label>
 				<div class="layui-input-block">
@@ -48,7 +49,8 @@
 			
 			
 			<div class="layui-form-item">
-				<input class="layui-btn" style="margin-left: 10%" type="submit" value="确认新增">
+				<!-- <input class="layui-btn" style="margin-left: 10%" type="submit" value="确认新增"> -->
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">确认添加</button>
 			</div>
 		</form>
 	</div>
@@ -56,31 +58,70 @@
 
 	<script src="media/layui/layui.js"></script>
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<!-- <script>
+		layui.use([ 'form', 'laydate' ],
+			function() {
+				var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+
+				//日期
+				laydate.render({
+					elem : '#date'
+				});
+				
+
+				//自定义验证规则
+				form.verify({
+					title : function(value) {
+						if (value.length < 5) {
+							return '标题至少得5个字符啊';
+						}
+					},
+					pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
+					content : function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+		});
+	</script> -->
 	<script>
-		layui
-				.use(
-						[ 'form', 'laydate' ],
-						function() {
-							var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+		layui.use([ 'form', 'laydate' ],
+		function() {
+			var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+			
+			laydate.render({
+				elem:'#date'
+			});
+			
+			//监听提交
+			  form.on('submit(demo1)', function(data){
+			    /* layer.alert(JSON.stringify(data.field), {
+			      title: '最终的提交信息'
+			    }) */
+			    
+			    $.ajax({
+			    	type:"post",
+			    	url:"courseadd.do",
+			    	data:data.field,
+			    	dataType:"json",
+			    	success:function(data){
+			    		if(data.code == 1){
+							layer.msg("添加成功");
+							window.location.href = "courselist.html";
+						}else if(data.code == 2){
+							layer.msg("名字不能为空");
+						}else if(data.code == 3){
+							layer.msg("创建日期不能为空");
+						}else if(data.code == 3){
+							layer.msg("周期不能为空");
+						}else{
+							layer.msg("修改失败");
+						}
+			    	}
+			    })
+			    
+			    return false;
+			  });				
 
-							//日期
-							laydate.render({
-								elem : '#date'
-							});
-							
-
-							//自定义验证规则
-							form.verify({
-								title : function(value) {
-									if (value.length < 5) {
-										return '标题至少得5个字符啊';
-									}
-								},
-								pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
-								content : function(value) {
-									layedit.sync(editIndex);
-								}
-							});
 		});
 	</script>
 </body>

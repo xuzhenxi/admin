@@ -2,13 +2,16 @@ package com.edu.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Depart {
     private Integer id;
 
     private String name;
-
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createtime;
 
     private Integer flag;

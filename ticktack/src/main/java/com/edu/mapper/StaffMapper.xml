@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edu.dao.IStaffDao">
-  <resultMap id="BaseResultMap" type="com.edu.entity.Staff">
+  <resultMap id="staffMap" type="Staff">
     <id column="no" jdbcType="VARCHAR" property="no" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="did" jdbcType="INTEGER" property="did" />
@@ -13,6 +13,25 @@
     <result column="createdate" jdbcType="DATE" property="createdate" />
     <result column="photo" jdbcType="VARCHAR" property="photo" />
   </resultMap>
+  
+  <resultMap id="staffMap2" type="Staff">
+    <id column="no" jdbcType="VARCHAR" property="no" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="did" jdbcType="INTEGER" property="did" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="createdate" jdbcType="DATE" property="createdate" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    
+    <association property="dept"
+    	javaType="com.edu.entity.Depart"
+    	column="did"
+    	select="com.edu.dao.IDepartDao.findById"
+    ></association>
+  </resultMap>
   <sql id="Base_Column_List">
     no, name, did, flag, sex, email, qq, phone, createdate, photo
   </sql>
@@ -20,5 +39,25 @@
   <select id="findCountByDid" parameterType="int" resultType="int">
   	select count(1) from t_staff where did=#{did}
   </select>
+  
+  <select id="count" resultType="int">
+  	select count(1) from t_staff
+  </select>
+  
+  <select id="findByIndexAndSize" parameterType="map" resultMap="staffMap2">
+  	select * from t_staff
+  	limit #{index},#{limit}
+  </select>
+  
+  <select id="findDeptByNo" parameterType="string" resultType="string">
+  	select d.dname from t_depart d
+  	inner join t_staff s
+  	on d.id=s.did
+  	where s.no=#{no}
+  </select>
+  
+  <delete id="deleteStaffByNo" parameterType="string">
+  	delete from t_staff where no=#{no}
+  </delete>
   
 </mapper>

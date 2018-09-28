@@ -11,4 +11,12 @@ public interface IDepartDao {
     
     public List<Depart> findByIndexAndSize(Map<String, Object> map);
     
+    public void deleteDepartById(int id);
+    
+    public void updateDepart(Depart depart);
+    
+    public void addDepart(Depart depart);
+    
+    public Depart findById(int id);
+    
 }

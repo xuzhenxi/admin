@@ -34,7 +34,19 @@
 		      ,{field: 'name', title: '学科名称'} 
 		      ,{field: 'week', title: '周数', sort: true}
 		      ,{field: 'createdate', title: '成立日期', sort: true}
-		      ,{field: 'type', title: '类型', sort: true}
+		      ,{field: 'type', title: '类型', sort: true,templet:function(obj){
+		    	  var s = "";
+		    	  if (obj.type == 1) {
+		    		  s += "普通";
+		    	  }else if (obj.type == 2) {
+		    		  s += "精品";
+		    	  }else if (obj.type == 3) {
+		    		  s += "业余";
+		    	  }else{
+		    		  s += obj.type;
+		    	  }
+		    	  return s;
+		      }}
 		      ,{field:'right', title: '操作',toolbar:"#barop"}
 		    ]]
 		  });
@@ -48,10 +60,12 @@
 		                    type: "POST",
 		                    data:"id="+data.id,
 		                    success: function(data){
-		                        if(data.code==1000){
+		                        if(data.code==1){
 		                            obj.del();//删除表格中的对应行数据
 		                            layer.close(index);
 		                            layer.msg("删除成功", {icon: 6});
+		                        }else if(data.code == 2){
+		                            layer.msg("该课程未结课", {icon: 5});
 		                        }else{
 		                            layer.msg("删除失败", {icon: 5});
 		                        }

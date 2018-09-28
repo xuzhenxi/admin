@@ -44,7 +44,7 @@ function showData(obj) {
 <body>
 
 	<div class="layui-container" style="margin-top: 5px">
-		<form class="layui-form" action="courseupdate.do" method="post">
+		<form class="layui-form" action="" method="post">
 		<div class="layui-form-item">
 				<label class="layui-form-label">学科序号</label>
 				<div class="layui-input-block">
@@ -76,23 +76,62 @@ function showData(obj) {
 			<div class="layui-form-item">
 				<label class="layui-form-label">学科类型</label>
 				<div class="layui-input-block">
-					<input type="text" name="location" id="f5" lay-verify="name" autocomplete="off"
-						class="layui-input">
+					<!-- <input type="text" name="location" id="f5" lay-verify="name" autocomplete="off"
+						class="layui-input"> -->
+					<select name="type" id="f5">
+						<option value="1">普通</option>
+						<option value="2">精品</option>
+						<option value="3">业余</option>
+					</select>
 				</div>
 			</div>
 			
 		
 			<div class="layui-form-item">
-				<input class="layui-btn"  style="margin-left: 10%"  type="submit" value="确认修改">
+				<!-- <input class="layui-btn"  style="margin-left: 10%"  type="submit" value="确认修改"> -->
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
 			</div>
 		</form>
 	</div>
 	
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-	<script>
+	<!-- <script>
 		layui.use([ 'form', 'laydate' ],
 						function() {
 							var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+
+		});
+	</script> -->
+	<script>
+		layui.use([ 'form', 'laydate' ],
+		function() {
+			var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+			
+			//监听提交
+			  form.on('submit(demo1)', function(data){
+			    /* layer.alert(JSON.stringify(data.field), {
+			      title: '最终的提交信息'
+			    }) */
+			    
+			    $.ajax({
+			    	type:"post",
+			    	url:"courseupdate.do",
+			    	data:data.field,
+			    	dataType:"json",
+			    	success:function(data){
+			    		if(data.code == 1){
+							layer.msg("修改成功");
+							window.location.href = "courselist.html";
+						}else if(data.code == 2){
+							layer.msg("不能为空");
+						}else{
+							layer.msg("修改失败");
+						}
+			    	}
+			    })
+			    
+			    return false;
+			  });				
 
 		});
 	</script>

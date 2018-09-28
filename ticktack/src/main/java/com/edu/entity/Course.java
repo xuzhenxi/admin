@@ -2,6 +2,10 @@ package com.edu.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Course {
     private Integer id;
 
@@ -10,7 +14,8 @@ public class Course {
     private Integer flag;
 
     private Integer week;
-
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdate;
 
     private Integer type;
@@ -47,6 +52,7 @@ public class Course {
         this.week = week;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
     public Date getCreatedate() {
         return createdate;
     }

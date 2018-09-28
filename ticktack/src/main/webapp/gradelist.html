@@ -33,7 +33,7 @@
 		      {field: 'id', title: '序号', sort: true, fixed: 'left'}
 		      ,{field: 'name', title: '班级名称'} 
 		      ,{field: 'cname', title: '学科名称'}
-		      ,{field: 'count', title: '班级人数', sort: true}
+		      ,{field: 'scount', title: '班级人数', sort: true}
 		      ,{field: 'week', title: '周数', sort: true}
 		      ,{field: 'location', title: '位置'}
 		      ,{field: 'createdate', title: '开班日期', sort: true}
@@ -50,7 +50,7 @@
 		                    type: "POST",
 		                    data:"id="+data.id,
 		                    success: function(data){
-		                        if(data.code==1000){
+		                        if(data.code==1){
 		                            obj.del();//删除表格中的对应行数据
 		                            layer.close(index);
 		                            layer.msg("删除成功", {icon: 6});

@@ -1,17 +1,18 @@
 package com.edu.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.edu.entity.Grade;
 
 public interface IGradeDao {
-    int deleteByPrimaryKey(Integer id);
+	
+	public List<Grade> findGradeByCid(int cid);
+	
+	public int count();
+	
+    public List<Grade> findByIndexAndSize(Map<String, Object> map);
+    
+    public void deleteById(int id);
 
-    int insert(Grade record);
-
-    int insertSelective(Grade record);
-
-    Grade selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Grade record);
-
-    int updateByPrimaryKey(Grade record);
 }

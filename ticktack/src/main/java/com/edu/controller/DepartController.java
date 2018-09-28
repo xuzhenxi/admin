@@ -1,5 +1,6 @@
 package com.edu.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,9 @@ public class DepartController {
 	@Autowired
 	private IDepartService departService;
 	
+	@Autowired
+	private IStaffService staffService;
+	
 	@RequestMapping("/departpage")
 	@ResponseBody
 	public Map<String, Object> findAllUser(int page, int limit){
@@ -32,9 +36,6 @@ public class DepartController {
 		
 		return map;
 	}
-	
-	@Autowired
-	private IStaffService staffService;
 	
 	@RequestMapping("/showcount")
 	@ResponseBody
@@ -54,4 +55,76 @@ public class DepartController {
 		}
 		return bean;
 	}
+	
+	@RequestMapping("/departdelete")
+	@ResponseBody
+	public JsonBean deleteDepartById(int id) {
+		JsonBean bean = new JsonBean();
+		
+		Integer count = staffService.findCountByDid(id);
+		
+		try {
+			if (count == 0) {
+				departService.deleteDepartById(id);
+				bean.setCode(1);
+			} else {
+				bean.setCode(2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/updatedepart")
+	@ResponseBody
+	public JsonBean updateDepart(Depart depart) {
+		JsonBean bean = new JsonBean();
+//		Depart depart = new Depart();
+//		depart.setId(id);
+//		depart.setName(name);
+//		System.out.println(createtime);
+//		depart.setCreatetime(createtime);
+		
+		try {
+			if (depart.getName() != null) {
+				departService.updateDepart(depart);
+				bean.setCode(1);
+			} else {
+				bean.setCode(2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/departadd.do")
+	@ResponseBody
+	public JsonBean addDepart(Depart depart) {
+		JsonBean bean = new JsonBean();
+		
+		if (depart.getName() == null) {
+			bean.setCode(2);
+		} else if (depart.getCreatetime() == null) {
+			bean.setCode(3);
+		} else {
+			departService.addDepart(depart);
+			bean.setCode(1);
+		}
+		
+		return bean;
+	}
 }
+
+
+
+
+
+
+
+

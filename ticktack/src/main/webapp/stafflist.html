@@ -8,7 +8,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
-<script src="media/js/jquery.min.js"></script>
+<script type="text/javascript" src="media/js/jquery.min.js"></script>
 </head>
 <body>
 	<div class="layui-container">
@@ -27,17 +27,22 @@
 		  //第一个实例
 		  table.render({
 		    elem: '#tbdata'
-		    ,url: 'staffpage.do' //数据接口
+		    ,dataType:'json'
+		    ,url: 'staffpage' //数据接口
 		    ,page: true //开启分页
 		    ,cols: [[ //表头
 		      {field: 'no', title: '工号', sort: true, fixed: 'left'}
 		      ,{field: 'name', title: '员工名称'}
-		      ,{field: 'dname', title: '所属部门'}
+		      ,{field: 'dname', title: '所属部门', templet:function(obj){
+		    	  var s = "";
+		    	  s += "<span>" + obj.dept.name + "</span>";
+		    	  return s;
+		      }}
 		      ,{field: 'sex', title: '性别'}
 		      ,{field: 'phone', title: '手机号'}
 		      ,{field: 'qq', title: 'qq号'}
 		      ,{field: 'email', title: '邮箱'}
-		      ,{field: 'createdate', title: '入职日期'}
+		      ,{field: 'createdate', title: '入职日期',sort:true}
 		      ,{field:'right', title: '操作',toolbar:"#barop"}
 		    ]]
 		  });
@@ -51,7 +56,7 @@
 		                    type: "POST",
 		                    data:"no="+data.no,
 		                    success: function(data){
-		                        if(data.code==1000){
+		                        if(data.code==1){
 		                            obj.del();//删除表格中的对应行数据
 		                            layer.close(index);
 		                            layer.msg("删除成功", {icon: 6});

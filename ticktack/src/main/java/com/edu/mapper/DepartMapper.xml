@@ -19,4 +19,20 @@
   	select * from t_depart limit #{index},#{size}
   </select>
   
+  <delete id="deleteDepartById" parameterType="int"> 
+  	delete from t_depart where id=#{id}
+  </delete>
+  
+  <update id="updateDepart" parameterType="Depart">
+  	update t_depart set name=#{name} where id=#{id}
+  </update>
+  
+  <insert id="addDepart" parameterType="Depart">
+  	insert into t_depart(name, createtime) value(#{name}, #{createtime})
+  </insert>
+  
+  <select id="findById" parameterType="int" resultType="Depart">
+  	select * from t_depart where id=#{id}
+  </select>
+  
 </mapper>

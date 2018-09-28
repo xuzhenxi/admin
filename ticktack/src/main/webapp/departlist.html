@@ -8,7 +8,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
-<script src="media/js/jquery.min.js"></script>
+<script type="text/javascript" src="media/js/jquery.min.js"></script>
+
 </head>
 <body>
 	<div class="layui-container">
@@ -33,7 +34,7 @@
 		      {field: 'id', title: '序号', sort: true, fixed: 'left'}
 		      ,{field: 'name', title: '部门名称'}
 		      ,{field: 'dcount', title: '部门人数', sort: true, templet:function(obj){
-		    	  var count = 333;
+		    	  var count = 0;
 		    	  $.ajax({
             		type:"get",
             		async:false,
@@ -59,16 +60,18 @@
 		        if(obj.event === 'del'){
 		            layer.confirm('是否确认删除部门?', function(index){
 		                $.ajax({
-		                    url: "departdelete.do",
+		                    url: "departdelete",
 		                    type: "POST",
 		                    data:"id="+data.id,
 		                    success: function(data){
-		                        if(data.code==1000){
+		                        if(data.code==1){
 		                            obj.del();//删除表格中的对应行数据
 		                            layer.close(index);
 		                            layer.msg("删除成功", {icon: 6});
+		                        }else if(data.code == 2){
+		                        	layer.msg("部门下有员工，无法删除", {icon: 5});
 		                        }else{
-		                            layer.msg("删除失败", {icon: 5});
+		                        	layer.msg("删除失败", {icon: 5});
 		                        }
 		                    }
 		                });

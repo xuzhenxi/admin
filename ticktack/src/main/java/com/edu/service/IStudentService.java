@@ -1,12 +1,10 @@
-package com.edu.dao;
+package com.edu.service;
 
 import java.util.List;
 
 import com.edu.entity.Student;
 
-public interface IStudentDao {
-	
-	public int findScountByGid(int id);
+public interface IStudentService {
 	
 	public List<Student> findByGid(int id);
 }

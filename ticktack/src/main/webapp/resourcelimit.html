@@ -124,6 +124,7 @@
 	                    data: $("#fm1").serialize(),
 	                    success: function (data) {
 	                        if (data.code == 1) {
+	                        	auth.reload();
 	                            layer.msg("修改权限成功");
 	                        } else {
 	                            layer.msg("修改权限失败");
