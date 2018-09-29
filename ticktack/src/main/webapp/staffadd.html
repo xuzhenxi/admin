@@ -16,7 +16,7 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">员工工号</label>
 				<div class="layui-input-block">
-					<input type="text" name="no" lay-verify="name" readonly="readonly" autocomplete="off" placeholder="请输入工号" id="no1" class="layui-input">
+					<input type="text" name="no" lay-verify="name" readonly="readonly" autocomplete="off" id="no1" class="layui-input">
 				</div>
 			</div>
 			<div class="layui-form-item">
@@ -67,7 +67,7 @@
 	        </div>
  			<div class="layui-form-item">
  				 <label class="layui-form-label">照片</label>
- 				 <button type="button" class="layui-btn" id="upfile" >
+ 				 <button type="button" class="layui-btn" id="file" >
 				  <i class="layui-icon">&#xe67c;</i>上传图片
 				</button>
 				<input type="hidden" name="photo" id="p1">
@@ -76,7 +76,8 @@
  				 </div>
  			</div>
 			<div class="layui-form-item">
-				<input class="layui-btn"  style="margin-left: 10%"  id="btn1" disabled="disabled" type="submit" value="确认新增">
+				<!-- <input class="layui-btn"  style="margin-left: 10%"  id="btn1" disabled="disabled" type="submit" value="确认新增"> -->
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">确认新增</button>
 			</div>
 		</form>
 	</div>
@@ -86,64 +87,99 @@
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 	<script>
 		var form;
-		layui.use([ 'form','upload', 'layedit', 'laydate' ],
-			function() {
-				form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
-				var upload = layui.upload;
-				   
-				  //执行实例
-				  var uploadInst = upload.render({
-				    elem: '#upfile' //绑定元素
-				    ,url: 'photoupload.do' //上传接口
-				    ,done: function(obj){
-				      //上传完毕回调
-				      console.log(obj);
-				      if(obj.code==1){
-				    	  $("#p1").val(obj.msg);
-					      $("#img1")[0].src="media/images/" + obj.msg;
-				      	  $("#btn1").attr("disabled",false);
-				      }else{
-				    	  $("#img1")[0].src="media/images/cw1.jpg";
-				      }
-				      
-				    }
-				    ,error: function(){
-				      //请求异常回调
-				    }
-				  });
-				//日期
-				laydate.render({
-					elem : '#date'
-				});
-				
+		layui.use(
+		[ 'form','upload', 'layedit', 'laydate' ],
+				function() {
+					form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
+					var upload = layui.upload;
+					   
+					  //执行实例
+					  var uploadInst = upload.render({
+					    elem: '#file' //绑定元素
+					    ,url: 'photoupload.do' //上传接口
+					    ,done: function(obj){
+					      //上传完毕回调
+					      console.log(obj);
+					      if(obj.code==1){
+					    	  $("#p1").val(obj.msg);
+						      $("#img1")[0].src="media/images/"+obj.msg;
+					      	  $("#btn1").attr("disabled",false);
+					      }else{
+					    	  $("#img1")[0].src="media/images/cw1.jpg";
+					      }
+					      
+					    }
+					    ,error: function(){
+					      //请求异常回调
+					    }
+					  });
+					//日期
+					laydate.render({
+						elem : '#date'
+					});
+					
+					
 
-				//自定义验证规则
-				form.verify({
-					title : function(value) {
-						if (value.length < 5) {
-							return '标题至少得5个字符啊';
+					var editIndex = layedit.build('LAY_demo_editor');
+					//自定义验证规则
+					form.verify({
+						title : function(value) {
+							if (value.length < 5) {
+								return '标题至少得5个字符啊';
+							}
+						},
+						phone : [/^[1][3,4,5,7,8][0-9]{9}$/, "手机号格式错误"],
+						content : function(value) {
+							layedit.sync(editIndex);
+						},
+						email : [/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, "邮箱格式错误"],
+						content : function(value) {
+							layedit.sync(editIndex);
 						}
-					},
-					pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
-					content : function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-				initData();
+					});
+					
+					//监听提交
+					form.on('submit(demo1)', function(data){
+					    $.ajax({
+					    	type:"post", 
+					    	url:"staffadd.do",
+					    	data:data.field,
+					    	dataType:"json",
+					    	success:function(data){
+					    		if(data.code == 1){
+					    			layer.msg("添加成功", {icon: 6});
+					    			
+					    			window.location.href="stafflist.html";
+					    		}else {
+					    			layer.msg(data.msg, {icon: 5});
+					    		}
+					    	}
+					    })
+					    return false;
+					});
+					initData();
 		});
+				
+				
 		//初始化数据
 		function initData() {
-			$.get("departall.do",null,function(arr){
-				for(i=0;i<arr.length;i++){
-					$("#cds").append("<option value='"+arr[i].id+"'>"+arr[i].name+"</option>");
+			$.get("departall.do",null,function(data){
+				if(data.code == 1) {
+					$(data.msg).each(function() {
+						$("#cds").append("<option value='" + this.id + "'>" + this.name + "</option>");
+					})
+				} else {
+					layer.msg(data.msg, {icon: 5});
 				}
-				form.render("select");
+				
+				form.render();
+				
 			});
 			$.get("staffno.do",null,function(obj){
-				if(obj.msg=='null'){
-					$("#no1").val("qf000001");
+				if(obj.code == 1){
+					$("#no1").val(obj.msg);
 				}else{
-					$("#no1").val(obj.msg+1);
+					layer.msg(obj.msg, {icon: 5});
 				}
 				
 			})

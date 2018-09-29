@@ -1,5 +1,7 @@
 package com.edu.service;
 
+import java.util.List;
+
 import com.edu.entity.Depart;
 import com.edu.vo.PageBean;
 
@@ -12,5 +14,6 @@ public interface IDepartService {
 	public void updateDepart(Depart depart);
 	
 	public void addDepart(Depart depart);
-
+	
+	public List<Depart> findAll();
 }

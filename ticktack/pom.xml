@@ -96,7 +96,20 @@
 			<artifactId>shiro-ehcache</artifactId>
 			<version>1.2.5</version>
 		</dependency>
+		
+		<!-- Excel文件上传 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>3.17</version>
+		</dependency>
+		
 		<!-- 添加spring支持 -->
 		<dependency>
 			<groupId>org.springframework</groupId>

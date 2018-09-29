@@ -69,6 +69,17 @@ public class CourseService implements ICourseService {
 			courseDao.addCourse(course);
 		}
 	}
+
+	@Override
+	public List<Course> findAllCourse() {
+		List<Course> list = null;
+		try {
+			list = courseDao.findAllCourse();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }
 
 

@@ -16,4 +16,16 @@ public interface IStaffDao {
     public String findDnameByNo(String no);
     
     public void deleteStaffByNo(String no);
+    
+    public Staff findLastStaff();
+    
+    public void addStaff(Staff staff);
+    
+    public void updateStaff(Staff staff);
+    
+    public Staff findStaffByNo(String no);
+    
+    public Staff findStaffByName(String name);
+    
+    public List<Staff> findAll();
 }

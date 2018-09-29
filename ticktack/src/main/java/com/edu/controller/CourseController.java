@@ -100,6 +100,25 @@ public class CourseController {
 		
 		return bean;
 	}
+	
+	@RequestMapping("/courseall.do")
+	@ResponseBody
+	public JsonBean findAllCourse() {
+		JsonBean bean = new JsonBean();
+		List<Course> list = null;
+		
+		try {
+			list = courseService.findAllCourse();
+			bean.setCode(1);
+			bean.setMsg(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
+		}
+		
+		return bean;
+	}
 }
 
 

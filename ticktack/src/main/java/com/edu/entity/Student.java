@@ -2,6 +2,10 @@ package com.edu.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Student {
     private String no;
 
@@ -9,6 +13,7 @@ public class Student {
 
     private String sex;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     private String cardno;
@@ -29,11 +34,23 @@ public class Student {
 
     private String introno;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdate;
 
     private String photo;
+    
+    private String gname;
+    
 
-    public String getNo() {
+	public String getGname() {
+		return gname;
+	}
+
+	public void setGname(String gname) {
+		this.gname = gname;
+	}
+
+	public String getNo() {
         return no;
     }
 
@@ -57,6 +74,7 @@ public class Student {
         this.sex = sex == null ? null : sex.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
     public Date getBirthday() {
         return birthday;
     }
@@ -137,6 +155,7 @@ public class Student {
         this.introno = introno == null ? null : introno.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
     public Date getCreatedate() {
         return createdate;
     }

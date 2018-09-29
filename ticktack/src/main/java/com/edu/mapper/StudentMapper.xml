@@ -18,6 +18,27 @@
     <result column="createdate" jdbcType="DATE" property="createdate" />
     <result column="photo" jdbcType="VARCHAR" property="photo" />
   </resultMap>
+  
+  <resultMap id="studentMap2" type="Student">
+    <id column="no" jdbcType="VARCHAR" property="no" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="introno" jdbcType="VARCHAR" property="introno" />
+    <result column="createdate" jdbcType="DATE" property="createdate" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="gname" jdbcType="VARCHAR" property="gname" />
+    
+  </resultMap>
+  
   <sql id="Base_Column_List">
     no, name, sex, birthday, cardno, school, education, gid, flag, email, qq, phone, 
     introno, createdate, photo
@@ -29,6 +50,83 @@
   
   <select id="findByGid" parameterType="int" resultMap="studentMap">
   	select * from t_student where gid=#{id}
+  </select>
+  
+  <select id="count" resultType="int">
+  	select count(1) from t_student
+  </select>
+  
+  <select id="findByIndexAndSize" parameterType="map" resultMap="studentMap2">
+  	select g.name gname,s.* from t_student s
+  	inner join t_grade g
+  	on s.gid=g.id
+  	limit #{index},#{size}
+  </select>
+  
+  <delete id="deleteStudentByNo" parameterType="string">
+  	delete from t_student where no=#{no}
+  </delete>
+  
+  <insert id="add" parameterType="Student">
+  	insert into t_student(no,name,sex,birthday,cardno,school,education,gid,flag,email,qq,phone,introno,createdate,photo)
+  	value(#{no},#{name},#{sex},#{birthday},#{cardno},#{school},#{education},#{gid},1,#{email},#{qq},#{phone},#{introno},#{createdate},#{photo})
+  </insert>
+  
+  <update id="update" parameterType="Student">
+    update t_student
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="cardno != null">
+        cardno = #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="gid != null">
+        gid = #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="introno != null">
+        introno = #{introno,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=DATE},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="findLastStu" resultType="Student">
+   select * from t_student order by no desc limit 1
+  </select>
+  
+  <select id="findByNo" parameterType="String" resultType="Student">
+  	select * from t_student where no=#{no}
   </select>
   
 </mapper>

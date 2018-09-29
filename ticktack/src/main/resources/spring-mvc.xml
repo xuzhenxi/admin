@@ -31,6 +31,23 @@
 		<!-- <mvc:path-matching suffix-pattern="false"/> -->
 	</mvc:annotation-driven>
 	
+	<!-- <mvc:annotation-driven conversion-service="conversionService" />
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="registerDefaultFormatters" value="true" />
+        <property name="formatterRegistrars">
+            <set>
+                <bean class="org.springframework.format.datetime.DateFormatterRegistrar">
+                    <property name="formatter" ref="dateFormatter"></property>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="dateFormatter" class="org.springframework.format.datetime.DateFormatter">
+        <property name="pattern" value="yyyy-MM-dd"></property>
+    </bean> -->
+
+	
 	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
 	<mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
 	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>

@@ -2,6 +2,7 @@ package com.edu.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,25 @@ public class DepartController {
 		} else {
 			departService.addDepart(depart);
 			bean.setCode(1);
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/departall.do")
+	@ResponseBody
+	public JsonBean findAll() {
+		JsonBean bean = new JsonBean();
+		List<Depart> list = null;
+		
+		try {
+			list = departService.findAll();
+			bean.setCode(1);
+			bean.setMsg(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
 		}
 		
 		return bean;

@@ -59,4 +59,58 @@ public class GradeService implements IGradeService {
 			gradeDao.deleteById(id);
 		}
 	}
+
+	@Override
+	public void addGrade(Grade grade) {
+		if (grade != null) {
+			gradeDao.addGrade(grade);
+		}
+	}
+	
+	@Override
+	public void updateGrade(Grade grade) {
+		if (grade.getName() != null && grade.getWeek() > 0 && grade.getLocation() != null) {
+			gradeDao.updateGrade(grade);
+		}
+	}
+	
+	@Override
+	public Grade findGradeById(int id) {
+		Grade grade = null;
+		if (id != 0) {
+			grade = gradeDao.findGradeById(id);
+		}
+		return grade;
+	}
+
+	@Override
+	public Grade findGradeByName(String name) {
+		Grade grade = null;
+		if (name != null) {
+			grade = gradeDao.findGradeByName(name);
+		}
+		return grade;
+	}
+	
+	@Override
+	public List<Grade> findAll() {
+		List<Grade> list = null;
+		try {
+			list = gradeDao.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+

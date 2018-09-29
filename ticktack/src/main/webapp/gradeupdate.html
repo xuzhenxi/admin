@@ -91,16 +91,46 @@ function showData(obj) {
 			
 		
 			<div class="layui-form-item">
-				<input class="layui-btn"  style="margin-left: 10%"  type="submit" value="确认修改">
+				<!-- <input class="layui-btn"  style="margin-left: 10%"  type="submit" value="确认修改"> -->
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
 			</div>
 		</form>
 	</div>
 	
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<!-- <script>
+		layui.use([ 'form', 'laydate' ],
+			function() {
+				var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+
+		});
+	</script> -->
 	<script>
 		layui.use([ 'form', 'laydate' ],
-						function() {
-							var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+		function() {
+			var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+			
+			//监听提交
+			  form.on('submit(demo1)', function(data){
+			    $.ajax({
+			    	type:"post",
+			    	url:"gradeupdate.do",
+			    	data:data.field,
+			    	dataType:"json",
+			    	success:function(data1){
+			    		if(data1.code == 1){
+							layer.msg("修改成功");
+							window.location.href = "gradelist.html";
+						}else if(data1.code == 2){
+							layer.msg("不能为空");
+						}else{
+							layer.msg("修改失败");
+						}
+			    	}
+			    })
+			    
+			    return false;
+			  });				
 
 		});
 	</script>

@@ -35,4 +35,8 @@
   	select * from t_depart where id=#{id}
   </select>
   
+  <select id="findAll" resultMap="departMap">
+  	select * from t_depart 
+  </select>
+  
 </mapper>

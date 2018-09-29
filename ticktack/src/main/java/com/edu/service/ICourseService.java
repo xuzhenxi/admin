@@ -1,5 +1,7 @@
 package com.edu.service;
 
+import java.util.List;
+
 import com.edu.entity.Course;
 import com.edu.vo.PageBean;
 
@@ -14,4 +16,6 @@ public interface ICourseService {
 	public void updateCourse(Course course);
 	
 	public void addCourse(Course course);
+	
+	public List<Course> findAllCourse();
 }

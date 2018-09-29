@@ -41,4 +41,8 @@
   	select name from t_course where id=#{id}
   </select>
   
+  <select id="findAllCourse" resultMap="courseMap">
+  	select * from t_course
+  </select>
+  
 </mapper>

@@ -25,7 +25,7 @@ public class Staff {
 
     private String phone;
     
-    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdate;
 
     private String photo;

@@ -57,6 +57,63 @@ public class GradeController {
 		
 		return bean;
 	}
+	
+	@RequestMapping("/gradeadd.do")
+	@ResponseBody
+	public JsonBean addGrade (Grade grade) {
+		JsonBean bean = new JsonBean();
+		try {
+			if (grade != null) {
+				gradeService.addGrade(grade);
+				bean.setCode(1);
+			} else {
+				bean.setCode(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/gradeupdate.do")
+	@ResponseBody
+	public JsonBean updateGrade(Grade grade) {
+		JsonBean bean = new JsonBean();
+		try {
+			if (grade.getName() != null && grade.getWeek() > 0 && grade.getLocation() != null) {
+				gradeService.updateGrade(grade);
+				bean.setCode(1);
+			} else {
+				bean.setCode(2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/gradeall.do")
+	@ResponseBody
+	public JsonBean findAllGrade() {
+		JsonBean bean = new JsonBean();
+		List<Grade> list = null;
+		try {
+			list = gradeService.findAll();
+			bean.setCode(1);
+			bean.setMsg(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
+		}
+		
+		return bean;
+	}
 }
 
 

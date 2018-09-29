@@ -23,17 +23,44 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">选择文件</label>
 				<div class="layui-input-block">
-					<input type="file" name="mFile" id="no1" class="layui-input">
+					<!-- <input type="file" name="mFile" id="no1" class="layui-input"> -->
+					<div class="layui-upload">
+  						<button type="button" class="layui-btn layui-btn-normal" id="file1">选择文件</button>
+  						<button type="button" class="layui-btn" id="file2">确认导入</button>
+					</div>
 				</div>
 			</div>
-		<div class="layui-form-item">
+			<!-- <div class="layui-form-item">
 				<input class="layui-btn" style="margin-left: 10%"  id="btn1" type="submit" value="确认导入">
-			</div>
+			</div> -->
 		
 		</form>
 	</div>
 	<script src="media/layui/layui.js"></script>
 	<script>
-</script>
+		var form;
+		layui.use([ 'form','upload', 'layedit', 'laydate' ],
+			function() {
+				form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
+				var upload = layui.upload;
+							   
+		    upload.render({
+		        elem: '#file1'
+		        ,url: 'studentbatch.do'
+		        ,auto: false 
+		        ,multiple: true
+		        ,accept: 'file' //普通文件
+		        ,bindAction: '#file2'
+		        ,done: function(data){
+		            if(data.code == 1) {
+		            	layer.msg("上传成功", {icon: 6});
+		            	window.location.href="studentlist.html";
+		            } else {
+		        		layer.msg("上传失败", {icon: 5});
+		            }
+		        }
+		    });
+		});
+	</script>
 </body>
 </html>

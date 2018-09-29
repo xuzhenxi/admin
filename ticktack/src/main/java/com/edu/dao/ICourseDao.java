@@ -21,6 +21,8 @@ public interface ICourseDao {
 	
 	public String findCnameById(int id);
 	
+	public List<Course> findAllCourse();
+	
 }
 
 

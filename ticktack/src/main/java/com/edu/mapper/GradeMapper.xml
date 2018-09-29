@@ -57,6 +57,26 @@
   	delete from t_grade where id=#{id}
   </delete>
   
+  <insert id="addGrade" parameterType="Grade">
+  	insert into t_grade(name,flag,week,createdate,location,cid) value(#{name},1,#{week},#{createdate},#{location},#{cid})
+  </insert>
+  
+  <update id="updateGrade" parameterType="Grade">
+  	update t_grade set name=#{name},week=#{week},location=#{location} where id=#{id}
+  </update>
+  
+  <select id="findGradeById" parameterType="int" resultType="Grade">
+  	select * from t_grade where id=#{id}
+  </select>
+  
+  <select id="findGradeByName" parameterType="string" resultType="Grade">
+  	select * from t_grade where name=#{name}
+  </select>
+  
+  <select id="findAll" resultMap="gradeMap">
+  	select * from t_grade
+  </select>
+  
 </mapper>
 
 

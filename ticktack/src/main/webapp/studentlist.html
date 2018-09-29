@@ -14,7 +14,7 @@
 	<div class="layui-container">
 		<table id="tbdata" lay-filter="tbop"></table>
 		<script type="text/html" id="barop">
-			<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="detail">查看详情</a>
+			<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="detail">修改</a>
     		<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
     		
 		</script>
@@ -54,7 +54,7 @@
 		                    type: "POST",
 		                    data:"no="+data.no,
 		                    success: function(data){
-		                        if(data.code==1000){
+		                        if(data.code==1){
 		                            obj.del();//删除表格中的对应行数据
 		                            layer.close(index);
 		                            layer.msg("删除成功", {icon: 6});
@@ -65,9 +65,13 @@
 		                });
 		            });
 		        } else if(obj.event === 'detail'){//编辑 修改
-		          // location.href="staffupdate.html?d="+ encodeURI(JSON.stringify(data));
-		           	layer.msg(JSON.stringify(data));
-		        }
+		        	layer.open({
+		                 area: ['500px', '500px'],
+		                 title: '员工信息编辑',
+		                 type: 2,
+		                 content:  'studentupdate.html?d='+ encodeURI(JSON.stringify(data)), //这里content是一个普通的String
+		            });
+		       }
 		});
 	});
 

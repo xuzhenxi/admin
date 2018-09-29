@@ -1,15 +1,15 @@
 package com.edu.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,8 +99,88 @@ public class StaffController {
 			bean.setCode(0);
 			bean.setMsg(e.getMessage());
 		}
-
+		return bean;
+	}
+	
+	@RequestMapping("/staffadd.do")
+	@ResponseBody
+	public JsonBean addStaff(Staff staff) {
+		JsonBean bean = new JsonBean();
+		try {
+			if (staff != null) {
+				staffService.addStaff(staff);
+				bean.setCode(1);
+			} else {
+				bean.setCode(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+		}
 		
+		return bean;
+	}
+	
+	@RequestMapping("/staffno.do")
+	@ResponseBody
+	public JsonBean findLastStaff() {
+		JsonBean bean = new JsonBean();
+		try {
+			Staff staff = staffService.findLastStaff();
+			if (staff != null) {
+				String no = staff.getNo();
+				no = no.substring(2);
+				no = "1" + no;
+				no = "qf" + (Integer.parseInt(no) + 1);
+				no = "qf" + no.substring(3);
+				bean.setCode(1);
+				bean.setMsg(no);
+			} else {
+				bean.setCode(1);
+				bean.setMsg("qf000001");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg("获取账号出错");
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/staffupdate.do")
+	@ResponseBody
+	public JsonBean updateStaff(Staff staff) {
+		JsonBean bean = new JsonBean();
+		try {
+			if (staff != null) {
+				staffService.updateStaff(staff);
+				bean.setCode(1);
+			} else {
+				bean.setCode(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+		}
+		
+		return bean;
+	}
+	
+	@RequestMapping("/staffall.do")
+	@ResponseBody
+	public JsonBean findAllStaff() {
+		JsonBean bean = new JsonBean();
+		List<Staff> list = null;
+		try {
+			list = staffService.findAll();
+			bean.setCode(1);
+			bean.setMsg(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			bean.setCode(0);
+			bean.setMsg(e.getMessage());
+		}
 		return bean;
 	}
 }

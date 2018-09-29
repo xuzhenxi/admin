@@ -19,4 +19,6 @@ public interface IDepartDao {
     
     public Depart findById(int id);
     
+    public List<Depart> findAll();
+    
 }

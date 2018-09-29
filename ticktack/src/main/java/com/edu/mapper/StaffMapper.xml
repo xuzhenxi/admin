@@ -60,4 +60,59 @@
   	delete from t_staff where no=#{no}
   </delete>
   
+  <select id="findLastStaff" resultType="Staff">
+  	select * from t_staff order by no desc limit 1
+  </select>
+  
+  <insert id="addStaff" parameterType="Staff">
+  	insert into t_staff(no,name,did,flag,sex,email,qq,phone,createdate,photo)
+  	value(#{no}, #{name}, #{did}, 1, #{sex}, #{email}, #{qq}, #{phone}, #{createdate}, #{photo})
+  </insert>
+  
+  <update id="updateStaff" parameterType="Staff">
+  	update t_staff
+    <set>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="did != null">
+        did = #{did},
+      </if>
+      <if test="flag != null">
+        flag = #{flag},
+      </if>
+      <if test="sex != null">
+        sex = #{sex},
+      </if>
+      <if test="email != null">
+        email = #{email},
+      </if>
+      <if test="qq != null">
+        qq = #{qq},
+      </if>
+      <if test="phone != null">
+        phone = #{phone},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate},
+      </if>
+      <if test="photo != null">
+        photo = #{photo},
+      </if>
+    </set>
+    where no = #{no}
+  </update>
+  
+  <select id="findStaffByNo" parameterType="String">
+  	select * from t_staff where no=#{no}
+  </select>
+  
+  <select id="findStaffByName" parameterType="string" resultType="Staff">
+  	select * from t_staff where name=#{name}
+  </select>
+  
+  <select id="findAll" resultMap="staffMap">
+  	select * from t_staff
+  </select>
+  
 </mapper>

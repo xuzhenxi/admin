@@ -69,4 +69,15 @@ public class DepartService implements IDepartService {
 			departDao.addDepart(depart);
 		}
 	}
+	
+	@Override
+	public List<Depart> findAll() {
+		List<Depart> list = null;
+		try {
+			list = departDao.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

@@ -12,5 +12,14 @@ public interface IGradeService {
 	public PageBean<Grade> findGradeByPage(int page, int size);
 	
 	public void deleteById(int id);
-
+	
+	public void addGrade(Grade grade);
+	
+	public void updateGrade(Grade grade);
+	
+	public Grade findGradeById(int id);
+	
+	public Grade findGradeByName(String name);
+	
+	public List<Grade> findAll();
 }
