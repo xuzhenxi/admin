@@ -31,6 +31,8 @@ public class AuthorityController {
 		String no = (String) session.getAttribute("no");
 		List<Authority> list = null;
 		
+		System.out.println("许振西到此一游");
+		
 		JsonBean bean = new JsonBean();
 		
 		try {
